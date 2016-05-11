@@ -2,12 +2,12 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://yoursite.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
-simple_search: https://www.google.com/search
-description:
+url: http://bibitiger.github.io
+title: bibitiger的博客
+subtitle: 把酒言欢.
+author: bibitiger
+simple_search: https://www.baidu.com/baidu
+description: 瞎比比
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -69,9 +69,6 @@ github_repo_count: 0
 github_show_profile_link: true
 github_skip_forks: true
 
-# Twitter
-twitter_user:
-twitter_tweet_button: true
 
 # Google +1
 google_plus_one: false
@@ -97,5 +94,8 @@ disqus_show_comment_count: false
 # Google Analytics
 google_analytics_tracking_id:
 
-# Facebook Like
-facebook_like: false
+
+# sina weibo
+weibo_user: boronny # 微博数字 ID 或域名 ID
+dribbble_user: bronny
+weibo_share: true # 是否开启微博分享按钮
