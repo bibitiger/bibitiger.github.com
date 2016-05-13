@@ -95,11 +95,21 @@ end
 
 # usage rake new_post[my-new-post] or rake new_post['my new post'] or rake new_post (defaults to "new-post")
 desc "Begin a new post in #{source_dir}/#{posts_dir}"
-task :new_post, :title do |t, args|
+task :new_post, :title, :titlename, :categories do |t, args|
   if args.title
     title = args.title
   else
     title = get_stdin("Enter a title for your post: ")
+  end
+  if args.titlename
+    titlename = args.titlename
+  else
+    titlename = get_stdin("Enter a titlename for your post: ")
+  end
+  if args.categories
+    categories = args.categories
+  else
+    categories = get_stdin("Enter a categories for your post: ")
   end
   raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(source_dir)
   mkdir_p "#{source_dir}/#{posts_dir}"
@@ -111,10 +121,10 @@ task :new_post, :title do |t, args|
   open(filename, 'w') do |post|
     post.puts "---"
     post.puts "layout: post"
-    post.puts "title: \"#{title.gsub(/&/,'&amp;')}\""
+    post.puts "title: \"#{titlename}\""
     post.puts "date: #{Time.now.strftime('%Y-%m-%d %H:%M:%S %z')}"
     post.puts "comments: true"
-    post.puts "categories: "
+    post.puts "categories: \"#{categories}\""
     post.puts "---"
   end
 end
