@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[bibitiger的博客]]></title>
-  <link href="http://bibitiger.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Octopress | bibitiger的博客]]></title>
+  <link href="http://bibitiger.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://bibitiger.github.io/"/>
   <updated>2016-05-13T17:09:18+08:00</updated>
   <id>http://bibitiger.github.io/</id>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[github Pages上部署octopress个人博客]]></title>
+    <title type="html"><![CDATA[Github Pages上部署octopress个人博客]]></title>
     <link href="http://bibitiger.github.io/blog/2016/05/13/makeupoctopress/"/>
     <updated>2016-05-13T17:03:53+08:00</updated>
     <id>http://bibitiger.github.io/blog/2016/05/13/makeupoctopress</id>

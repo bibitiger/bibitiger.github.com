@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>http://bibitiger.github.io/blog/2016/05/13/lala/</loc>
-<lastmod>2016-05-13T11:37:59+08:00</lastmod>
-</url>
-<url>
-<loc>http://bibitiger.github.io/blog/2016/05/12/zatan/</loc>
-<lastmod>2016-05-12T15:12:31+08:00</lastmod>
-</url>
-<url>
-<loc>http://bibitiger.github.io/blog/2016/05/12/mon/</loc>
-<lastmod>2016-05-12T09:40:55+08:00</lastmod>
+<loc>http://bibitiger.github.io/blog/2016/05/13/makeupoctopress/</loc>
+<lastmod>2016-05-13T17:03:53+08:00</lastmod>
 </url>
 <url>
 <loc>http://bibitiger.github.io/blog/archives/</loc>
@@ -22,12 +14,6 @@
 <loc>http://bibitiger.github.io/</loc>
 </url>
 <url>
-<loc>http://bibitiger.github.io/blog/categories/c-plus-plus/</loc>
-</url>
-<url>
-<loc>http://bibitiger.github.io/blog/categories/qing-gan/</loc>
-</url>
-<url>
-<loc>http://bibitiger.github.io/blog/categories/ha-ha/</loc>
+<loc>http://bibitiger.github.io/blog/categories/octopress/</loc>
 </url>
 </urlset>
