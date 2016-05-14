@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | bibitiger的博客]]></title>
   <link href="http://bibitiger.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://bibitiger.github.io/"/>
-  <updated>2016-05-15T05:23:43+08:00</updated>
+  <updated>2016-05-15T06:26:50+08:00</updated>
   <id>http://bibitiger.github.io/</id>
   <author>
     <name><![CDATA[bibitiger]]></name>
@@ -199,32 +199,37 @@ $ rake generate
 
 <p>设置头像，头像设置是在octopress/source/_includes/header.html里</p>
 
-<p>```html</p>
+<p>```html
+</p>
 
-<script src="/javascripts/md5.js"></script>
+<script src="{{ root_url }}/javascripts/md5.js"></script>
 
 
 <pre><code>&lt;script type="text/javascript"&gt;
-    document.write("&lt;img src='http://www.gravatar.com/avatar/" + MD5("") + "?s=160' alt='Profile Picture' style='width: 160px;' /&gt;");
+    document.write("&lt;img src='http://www.gravatar.com/avatar/" + MD5("{{ site.email | downcase }}") + "?s=160' alt='Profile Picture' style='width: 160px;' /&gt;");
 &lt;/script&gt;
 </code></pre>
 
-<pre><code>
-说两种方法
-
-* 一种就是将图片放置到图床[^2]上,替换上面代码中的***src***的内容
-* 还有一种就是本地存放，将头像放到octopress/source/images/中，将***src***的内容替换成***“/images/yours.png”***
-
-如果想更好的话就是把这段代码全部替换成一个***img***的代码，因为我们不需要脚本帮我们组合图片地址，更不需要计算md5码
-
-设置微博的话，我们只需要把下面的代码加入到_config.yml最下方就好了
-</code></pre>
-
-<p>weibo_user: baronny # 微博数字 ID 或域名 ID
-weibo_share: true # 是否开启微博分享按钮
+<p>
 ```</p>
 
-<p>微博域名一般就在这里：<strong><em>微博->个人->设置->个性域名</em></strong>，例如：***“<a href="http://weibo.com.yours%E2%80%9D***%EF%BC%8C">http://weibo.com.yours%E2%80%9D***%EF%BC%8C</a>"yours"就是你的域名ID</p>
+<p>说两种方法</p>
+
+<ul>
+<li>一种就是将图片放置到图床<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>上,替换上面代码中的<strong><em>src</em></strong>的内容</li>
+<li>还有一种就是本地存放，将头像放到octopress/source/images/中，将<strong><em>src</em></strong>的内容替换成<strong><em>“/images/yours.png”</em></strong></li>
+</ul>
+
+
+<p>如果想更好的话就是把这段代码全部替换成一个<strong><em>img</em></strong>的代码，因为我们不需要脚本帮我们组合图片地址，更不需要计算md5码</p>
+
+<p>设置微博的话，我们只需要把下面的代码加入到_config.yml最下方就好了</p>
+
+<pre><code>weibo_user: baronny # 微博数字 ID 或域名 ID
+weibo_share: true # 是否开启微博分享按钮
+</code></pre>
+
+<p>微博域名一般就在这里：<strong><em>微博->个人->设置->个性域名</em></strong>，例如：<code>http://weibo.com.yours</code>，"yours"就是你的域名ID</p>
 
 <p>现在我们就能预览到带有我们头像和信息、微博的微博了，下来我们写第一篇博文吧。</p>
 
@@ -236,192 +241,187 @@ weibo_share: true # 是否开启微博分享按钮
 
 <p>但是我们发现预览的速度很慢，这是由于模板和主题有使用google，Twitter等相关内容，墙的原因。。。</p>
 
-<p>首先将_config.yml里有关google和Twitter的东西都注释掉。然后将所有文件里引用到google公共库的地方都换成国内镜像<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
+<p>首先将_config.yml里有关google和Twitter的东西都注释掉。然后将所有文件里引用到google公共库的地方都换成国内镜像<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>
 ,<strong><em>“ajax.googleapis.com/ajax/libs/”</em></strong>和<strong><em>“fonts.useso.com/css?”</em></strong></p>
 
 <p>将<strong><em>“octopress/source/_includes/custom/navigation.html”</em></strong>里面的内容修改成你想要的，类似于这样</p>
 
-<p>```html</p>
+<p>```html
+</p>
 
 <ul class="main-navigation">
-  <li><a href="/">首页</a></li>
-  <li><a href="/blog/archives">全部文章</a></li>
+  <li><a href="{{ root_url }}/">首页</a></li>
+  <li><a href="{{ root_url }}/blog/archives">全部文章</a></li>
+
 </ul>
 
 
-<p>```</p>
-
-<p>侧边栏显示<strong><em>最新文章</em></strong>在<strong><em>“octopress/source/_includes/asides/”</em></strong>添加<strong><em>“recent_post.html”</em></strong>文件，在里面加入如下代码</p>
-
-<pre><code>&lt;section&gt;
-    &lt;h2&gt;最新文章&lt;/h2&gt;
-    &lt;ul id="recent_posts"&gt;
-        
-        &lt;li class="post"&gt;
-            &lt;a href="/blog/2016/05/13/makeupoctopress/"&gt;Github Pages上部署octopress个人博客&lt;/a&gt;
-        &lt;/li&gt;
-        
-    &lt;/ul&gt;
-&lt;/section&gt;
+<pre><code>
+侧边栏显示***最新文章***在***“octopress/source/_includes/asides/”***添加***“recent_post.html”***文件，在里面加入如下代码 
 </code></pre>
-
-<p>在<strong><em>octopress/source/_includes/header.html</em></strong>最下方加入代码</p>
-
-<pre><code><section>
-  <h2>最新文章</h2>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2016/05/13/makeupoctopress/">Github Pages上部署octopress个人博客</a>
-      </li>
-    
-  </ul>
-</section>
-
-</code></pre>
-
-<p>并且把<strong><em>octopress/source/_includes/custom/header.html</em></strong>里面的代码都删除</p>
-
-<p>在<strong><em>_config.yml</em></strong>修改<strong><em>“ecent_posts: 2”</em></strong>可以更改最新文章显示的最多条数</p>
-
-<p>侧边栏显示<strong><em>分类</em></strong>，创建<strong><em>“octopress/plugins/category_list.rb”</em></strong>文件，在里面加入如下代码</p>
-
-<pre><code># encoding: utf-8
-module Jekyll
-
-class Site
-
-def create_category_list
-  write_to_tag_cloud if @config['category_tag_cloud']
-  # write_to_sidebar if @config['category_sidebar']
-end
-
-private
-# generate category tag list and write to 'source/_includes/asides/categories_tag.html'
-def write_to_tag_cloud
-  puts ' =&gt; Creating Categories Tag Cloud'
-  lists = {}
-  max, min = 1, 1
-  self.categories.keys.sort_by{ |str| str.downcase }.each do |category|
-    count = self.categories[category].count
-    lists[category] = count
-    max = count if count &gt; max
-  end
-
-  html = ''
-  lists.each do | category, counter |
-    url = get_category_url category
-    if counter &lt; 20
-      setfontsize = 20
-    else
-      setfontsize = 80 * (Float(counter)/max)
-    end
-
-    setfontsize = 20 if setfontsize &lt; 20
-    style = "font-size: #{80 + setfontsize}%"
-    if @config['category_counter']
-      html &lt;&lt; " &lt;a href='#{url}' style='#{style}'&gt;#{category.capitalize}(#{self.categories[category].count})&lt;/a&gt; "
-    else
-      html &lt;&lt; " &lt;a href='#{url}' style='#{style}'&gt;#{category.capitalize}&lt;/a&gt; "
-    end
-  end
-
-  File.open(File.join(@source, '_includes/asides/categories_tag.html'), 'w') do |file|
-    file &lt;&lt; """
-&lt;section&gt;
-&lt;h2&gt;#{@config['category_title'] || 'Categories'}&lt;/h2&gt;
-&lt;span class='categories_tag'&gt;#{html}&lt;/span&gt;
-&lt;/section&gt;
-
-"""
-  end
-end
-
-# generate category lists and write to 'source/_includes/asides/categories_sidebar.html'
-def write_to_sidebar
-  puts ' =&gt; Creating Categories Sidebar'
-  html = "&lt;ul&gt;\n"
-  # case insensitive sorting
-  @categories.keys.sort_by{ |str| str.downcase }.each do |category|
-    url = get_category_url category
-    if @config['category_counter']
-      html &lt;&lt; "  &lt;li&gt;&lt;a href='#{url}'&gt;#{category.capitalize} (#{@categories[category].count})&lt;/a&gt;&lt;/li&gt;\n"
-    else
-      html &lt;&lt; "  &lt;li&gt;&lt;a href='#{url}'&gt;#{category.capitalize}&lt;/a&gt;&lt;/li&gt;\n"
-    end
-  end
-  html &lt;&lt; "&lt;/ul&gt;"
-  File.open(File.join(@source, '_includes/asides/categories_sidebar.html'), 'w') do |file|
-    file &lt;&lt; """
-&lt;section&gt;
-&lt;h1&gt;#{@config['category_title'] || 'Categories'}&lt;/h1&gt;
-#{html}
-&lt;/section&gt;
-
-"""
-  end
-end
-
-def get_category_url(category)
-  dir = @config['category_dir'] || 'categories'
-  File.join @config['root'], dir, category.to_url
-end
-end
-
-class CategoryList &lt; Generator
-safe true
-priority :low
-
-def generate(site)
-  puts "CategoryList begin genrate"
-  if site.config['category_list']
-    puts "## Generating Categories.."
-    site.create_category_list
-  end
-end
-end
-
-end
-</code></pre>
-
-<p>创建<strong><em>octopress/source/_includes/asides/categories_tag.html</em></strong>文件，并写入如下代码</p>
 
 <pre><code>
+&lt;section&gt;
+    &lt;h2&gt;最新文章&lt;/h2&gt;
+    &lt;ul id="recent_posts"&gt;
+        {% for post in site.posts limit: site.recent_posts %}
+        &lt;li class="post"&gt;
+            &lt;a href="{{ root_url }}{{ post.url }}"&gt;{% if site.titlecase %}{{ post.title | titlecase }}{% else %}{{ post.title }}{% endif %}&lt;/a&gt;
+        &lt;/li&gt;
+        {% endfor %}
+    &lt;/ul&gt;
+&lt;/section&gt;
+
+</code></pre>
+
+<pre><code>
+在***octopress/source/_includes/header.html***最下方加入代码
+
+`{% include asides/recent_posts.html %}`
+
+并且把***octopress/source/_includes/custom/header.html***里面的代码都删除
+
+在***_config.yml***修改***“ecent_posts: 2”***可以更改最新文章显示的最多条数
+
+侧边栏显示***分类***，创建***“octopress/plugins/category_list.rb”***文件，在里面加入如下代码
+
+    
+    # encoding: utf-8
+    module Jekyll
+
+    class Site
+
+    def create_category_list
+      write_to_tag_cloud if @config['category_tag_cloud']
+      # write_to_sidebar if @config['category_sidebar']
+    end
+
+    private
+    # generate category tag list and write to 'source/_includes/asides/categories_tag.html'
+    def write_to_tag_cloud
+      puts ' =&gt; Creating Categories Tag Cloud'
+      lists = {}
+      max, min = 1, 1
+      self.categories.keys.sort_by{ |str| str.downcase }.each do |category|
+        count = self.categories[category].count
+        lists[category] = count
+        max = count if count &gt; max
+      end
+
+      html = ''
+      lists.each do | category, counter |
+        url = get_category_url category
+        if counter &lt; 20
+          setfontsize = 20
+        else
+          setfontsize = 80 * (Float(counter)/max)
+        end
+
+        setfontsize = 20 if setfontsize &lt; 20
+        style = "font-size: #{80 + setfontsize}%"
+        if @config['category_counter']
+          html &lt;&lt; " &lt;a href='#{url}' style='#{style}'&gt;#{category.capitalize}(#{self.categories[category].count})&lt;/a&gt; "
+        else
+          html &lt;&lt; " &lt;a href='#{url}' style='#{style}'&gt;#{category.capitalize}&lt;/a&gt; "
+        end
+      end
+
+      File.open(File.join(@source, '_includes/asides/categories_tag.html'), 'w') do |file|
+        file &lt;&lt; """{% if site.category_tag_cloud %}
+    &lt;section&gt;
+    &lt;h2&gt;#{@config['category_title'] || 'Categories'}&lt;/h2&gt;
+    &lt;span class='categories_tag'&gt;#{html}&lt;/span&gt;
+    &lt;/section&gt;
+    {% endif %}
+    """
+      end
+    end
+
+    # generate category lists and write to 'source/_includes/asides/categories_sidebar.html'
+    def write_to_sidebar
+      puts ' =&gt; Creating Categories Sidebar'
+      html = "&lt;ul&gt;\n"
+      # case insensitive sorting
+      @categories.keys.sort_by{ |str| str.downcase }.each do |category|
+        url = get_category_url category
+        if @config['category_counter']
+          html &lt;&lt; "  &lt;li&gt;&lt;a href='#{url}'&gt;#{category.capitalize} (#{@categories[category].count})&lt;/a&gt;&lt;/li&gt;\n"
+        else
+          html &lt;&lt; "  &lt;li&gt;&lt;a href='#{url}'&gt;#{category.capitalize}&lt;/a&gt;&lt;/li&gt;\n"
+        end
+      end
+      html &lt;&lt; "&lt;/ul&gt;"
+      File.open(File.join(@source, '_includes/asides/categories_sidebar.html'), 'w') do |file|
+        file &lt;&lt; """{% if site.category_sidebar %}
+    &lt;section&gt;
+    &lt;h1&gt;#{@config['category_title'] || 'Categories'}&lt;/h1&gt;
+    #{html}
+    &lt;/section&gt;
+    {% endif %}
+    """
+      end
+    end
+
+    def get_category_url(category)
+      dir = @config['category_dir'] || 'categories'
+      File.join @config['root'], dir, category.to_url
+    end
+    end
+
+    class CategoryList &lt; Generator
+    safe true
+    priority :low
+
+    def generate(site)
+      puts "CategoryList begin genrate"
+      if site.config['category_list']
+        puts "## Generating Categories.."
+        site.create_category_list
+      end
+    end
+    end
+
+    end
+    
+
+创建***octopress/source/_includes/asides/categories_tag.html***文件，并写入如下代码
+</code></pre>
+
+<pre><code>{% if site.category_tag_cloud %}
 &lt;section&gt;
 &lt;h2&gt;分類&lt;/h2&gt;
 &lt;/section&gt;
-
+{% endif %}
 </code></pre>
-
-<p>在<strong><em>_config.tml</em></strong>里面加入下方代码</p>
-
-<pre><code># ----------------------- #
-#    Categories           #
-# ----------------------- #
-# create categories page
-category_list: true
-# use counter after categories
-category_counter: true
-# category title
-category_title: 分類
-# create an include categories list in @source/_includes/asides/categories_sidebar.html
-# and don't forget to add 'asides/categories_sidebar.html' into @default_asides if you want to enable it.
-category_sidebar: true
-# create an include categories tag cloud page in @source/_includes/asides/categories_tag.html
-# and don't forget to add 'asides/categories_tag.html' to @default_asides if you want to enable it.
-category_tag_cloud: true
-</code></pre>
-
-<p>在<strong><em>octopress/source/_includes/header.html</em></strong>最下方加入代码</p>
 
 <pre><code>
-<section>
-<h2>分類</h2>
-<span class='categories_tag'> <a href='/blog/categories/octopress' style='font-size: 100%'>Octopress(1)</a> </span>
-</section>
+在***_config.tml***里面加入下方代码
 
+    
+    # ----------------------- #
+    #    Categories           #
+    # ----------------------- #
+    # create categories page
+    category_list: true
+    # use counter after categories
+    category_counter: true
+    # category title
+    category_title: 分類
+    # create an include categories list in @source/_includes/asides/categories_sidebar.html
+    # and don't forget to add 'asides/categories_sidebar.html' into @default_asides if you want to enable it.
+    category_sidebar: true
+    # create an include categories tag cloud page in @source/_includes/asides/categories_tag.html
+    # and don't forget to add 'asides/categories_tag.html' to @default_asides if you want to enable it.
+    category_tag_cloud: true
+    
 
+在***octopress/source/_includes/header.html***最下方加入代码
 </code></pre>
+
+<pre><code>{% include asides/categories_tag.html %}
+</code></pre>
+
+<p>```</p>
 
 <p>如果想首页文章不全部显示的话，在想要截止显示的位置加入</p>
 
@@ -464,7 +464,7 @@ git push origin source
 
 <p>域名有了的话，创建一个CNAME的二级域名，并解析，对应到你的github仓库地址，延续上面的话应该是：yours.github.io</p>
 
-<p>创建<strong><em>“octopress/source/CNAME”</em></strong>文件，并向里面写入你刚刚创建的CNAME二级域名，例如：<code>blog.yours.com</code>，不要带<a href="http://%E6%88%96%E8%80%85https://%E4%B9%8B%E7%B1%BB%E7%9A%84%E3%80%82">http://%E6%88%96%E8%80%85https://%E4%B9%8B%E7%B1%BB%E7%9A%84%E3%80%82</a></p>
+<p>创建<strong><em>“octopress/source/CNAME”</em></strong>文件，并向里面写入你刚刚创建的CNAME二级域名，例如：<code>blog.yours.com</code>，不要带<code>http://</code>或者<code>https://</code>之类的。</p>
 
 <pre><code>rake generate
 rake deploy
@@ -503,7 +503,9 @@ rake deploy
 <li id="fn:1">
 <p>octopress的主题放置在octopress/.themes/<a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
 <li id="fn:2">
-<p><a href="http://cdn.code.baidu.com/">百度静态镜像</a><a href="#fnref:2" rev="footnote">&#8617;</a></p></li>
+<p>我图床用的是<a href="www.qiniu.com/">七牛云存储</a><a href="#fnref:2" rev="footnote">&#8617;</a></p></li>
+<li id="fn:3">
+<p><a href="http://cdn.code.baidu.com/">百度静态镜像</a><a href="#fnref:3" rev="footnote">&#8617;</a></p></li>
 </ol>
 </div>
 
