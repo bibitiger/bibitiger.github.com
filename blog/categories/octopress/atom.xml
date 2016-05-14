@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | bibitiger的博客]]></title>
   <link href="http://bibitiger.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://bibitiger.github.io/"/>
-  <updated>2016-05-13T17:12:16+08:00</updated>
+  <updated>2016-05-15T05:23:43+08:00</updated>
   <id>http://bibitiger.github.io/</id>
   <author>
     <name><![CDATA[bibitiger]]></name>
@@ -18,7 +18,495 @@
     <link href="http://bibitiger.github.io/blog/2016/05/13/makeupoctopress/"/>
     <updated>2016-05-13T17:03:53+08:00</updated>
     <id>http://bibitiger.github.io/blog/2016/05/13/makeupoctopress</id>
-    <content type="html"><![CDATA[<h1>原文地址：<a href="blog.bibitiger.cn/blog/2016/05/13/makeupoctopress/"></a></h1>
+    <content type="html"><![CDATA[<h2>原文地址：<a href="blog.bibitiger.cn/blog/2016/05/13/makeupoctopress/">blog.bibitiger.cn/blog/2016/05/13/makeupoctopress/</a></h2>
+
+<p><br/></p>
+
+<hr />
+
+<h3>引言</h3>
+
+<p><a href="http://octopress.org/">Octopress</a>是什么？这在2.0的版本的说明上说的很清楚</p>
+
+<blockquote><p>Octopress is a framework designed by Brandon Mathis for Jekyll, the blog aware static site generator powering Github Pages.</p></blockquote>
+
+<p>这就是一个基于<a href="http://github.com/mojombo/jekyll">Jekyll</a>，用于布置在Github上的静态博客系统，号称(<strong><em>A blogging framework for hackers</em></strong>)</p>
+
+<p>ok，闲话就先扯到这里，由于我的环境是mac，OS X Yosemite 10.10.5，所以windows和Ubuntu的童鞋们可以仅做参考，但是相关ruby和设置，html，css等相关修改都是一样的。</p>
+
+<hr />
+
+<!--more-->
+
+
+<h3>几点基本概念</h3>
+
+<p>Octopress和Jekyll还不清楚的，请自行google补脑</p>
+
+<ol>
+<li><a href="git-scm.com">Git</a>  版本管理控制系统，相关操作百度一大堆，之后会在本文使用中给出具体用到的命令，mac自带</li>
+<li><a href="http://www.ruby-lang.org/en/downloads/">Ruby</a> Octopress实现用的语言，mac本身自带</li>
+<li><a href="https://shopify.github.io/liquid/">Liquid</a> ruby模板语言，主要用于自定义渲染，Jeckyll就是基于这个模板的，如果要修改相关的渲染排版，了解下还是有必要的，Liquid语法可以查看<a href="https://github.com/Shopify/liquid/wiki/Liquid-for-Designers">Liquid语法文档</a></li>
+<li><a href="https://github.com/">Github</a> 版本管理系统，公开仓库免费，Github pages用于搭建个人技术博客</li>
+<li><a href="http://www.rvm.io/">RVM</a> ruby版本管理工具</li>
+<li><a href="rubygems.org/">RubyGems</a> ruby程序包(Gem)管理器，简单的想象的话就类似于apt-get</li>
+<li><a href="www.gembundler.com/">Bundler</a> 管理Gem相依性工具，根据项目中的Gemfile和Gemfile.lock下载安装响应的依赖包</li>
+<li><a href="http://rake.rubyforge.org/">Rake</a> 构建语言，根据项目中的Rakefile构建项目</li>
+</ol>
+
+
+<hr />
+
+<h3>开始</h3>
+
+<h4>安装ruby</h4>
+
+<p>octopress要求ruby版本在1.9.3以上，首先我们要查看我们的ruby版本是多少</p>
+
+<pre><code>$ ruby --version
+ruby 2.3.0p0 (2015-12-25 revision 53290) [x86_64-darwin14]
+</code></pre>
+
+<p>如果小于1.9.3的话，那我们就需要更新ruby，rbven和RVM都可以更新下载ruby，这里我们使用RVM。
+那首先安装RVM：</p>
+
+<pre><code>$ curl -L https://get.rvm.io | bash -s stable --ruby
+</code></pre>
+
+<p>安装可能需要一点时间，主要看网络，接下来查看RVM上的ruby版本都有哪些</p>
+
+<pre><code>$ rvm list known
+# MRI Rubies
+[ruby-]1.8.6[-p420]
+[ruby-]1.8.7[-head] # security released on head
+[ruby-]1.9.1[-p431]
+[ruby-]1.9.2[-p330]
+[ruby-]1.9.3[-p551]
+[ruby-]2.0.0[-p648]
+[ruby-]2.1[.8]
+[ruby-]2.2[.4]
+[ruby-]2.3[.0]
+</code></pre>
+
+<p>最新版本已经到了2.3.0了，我是一个喜欢跟新的人，当然了大家可以根据自己的喜好选择1.9.3及以上版本都可以，如果以前就有ruby项目，需要配置gem环境，默认你们都是老鸟了，再此不多阐述。我装的2.3.0，直接上代码吧。</p>
+
+<pre><code>$ rvm install 2.3
+$ rvm list
+
+rvm rubies
+
+=* ruby-2.3.0 [ x86_64 ]
+
+# =&gt; - current
+# =* - current &amp;&amp; default
+#  * - default
+$ rvm use 2.3.0
+</code></pre>
+
+<p>将我们的rubygems也更新到最新</p>
+
+<pre><code>$ rvm rubygems latest
+Installed rubygems 2.5.1 is newer than 2.4.8 provided with installed ruby, skipping installation, use --force to force installation.
+</code></pre>
+
+<p>如果第一次使用gems的话，注意要将gems的源设成淘宝的镜像，墙的原因你懂得</p>
+
+<pre><code>$ gem sources --remove https://rubygems.org/
+$ gem sources -a https://ruby.taobao.org/
+$ gem sources -l
+*** CURRENT SOURCES ***
+
+https://ruby.taobao.org
+</code></pre>
+
+<p>安装bundler</p>
+
+<pre><code>$ gem install bundler
+</code></pre>
+
+<p>ok,ruby相关的安装就这些，下来我们开始安装octopress</p>
+
+<h4>安装octopress</h4>
+
+<p>mac自带git，所以如果没有git的话，自己先把git装好，这里就不说了</p>
+
+<pre><code>$ git clone git://github.com/imathis/octopress.git octopress   //octopress为你想要将octopress部署的本地位置
+$ cd octopress/ 
+</code></pre>
+
+<p>下载安装octopress的依赖程序包，用到了bundler，可以打开octopress/Gemfile这个文件查看依赖包都是哪些，octopress/Gemfile.lock是bundler记录已经安装了版本的地方，只要两个工程的Gemfile.lock的版本一样就能保证两个工程的依赖包的相关版本都是一致的，用以保证我们工程环境的一致性，多人开发或者工程转移时比较关键。</p>
+
+<pre><code>$ bundle install
+</code></pre>
+
+<p>使用rake来build我们的octopress</p>
+
+<pre><code>$ rake install
+</code></pre>
+
+<p>通过查看Rakefile可以看到，rake都干了些什么。这里建议大家最好还是给octopress建立一个project，我用的编辑器是<a href="www.sublimetext.com/">Sublime Text2</a>。我们一起看下上一步具体都在做什么</p>
+
+<pre><code class="ruby">desc "Initial setup for Octopress: copies the default theme into the path of Jekyll's generator. Rake install defaults to rake install[classic] to install a different theme run rake install[some_theme_name]"
+task :install, :theme do |t, args|
+  if File.directory?(source_dir) || File.directory?("sass")
+    abort("rake aborted!") if ask("A theme is already installed, proceeding will overwrite existing files. Are you sure?", ['y', 'n']) == 'n'
+  end
+  # copy theme into working Jekyll directories
+  theme = args.theme || 'classic'
+  puts "## Copying "+theme+" theme into ./#{source_dir} and ./sass"
+  mkdir_p source_dir
+  cp_r "#{themes_dir}/#{theme}/source/.", source_dir
+  mkdir_p "sass"
+  cp_r "#{themes_dir}/#{theme}/sass/.", "sass"
+  mkdir_p "#{source_dir}/#{posts_dir}"
+  mkdir_p public_dir
+end
+</code></pre>
+
+<p>这里其实是可以带一个参数的，这个参数指定一个我们希望用的主题<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>模板，如果没有指定的话系统自动使用classic主题，我们没有指定主题，所以这里直接使用默认的。
+接着拷贝该主题文件夹下的source和sass文件夹内容到octopress的source和sass文件夹，并且创建_posts和public文件夹。</p>
+
+<p>修改_config.yml文件</p>
+
+<pre><code>title: bibitiger的博客  //博客名称，修改成你自己的,下同
+subtitle: 把酒言欢.     //博客副标题
+author: bibitiger      //作者
+</code></pre>
+
+<p>生成博客</p>
+
+<pre><code>$ rake generate
+</code></pre>
+
+<p>本地预览</p>
+
+<pre><code>$ rake preview
+</code></pre>
+
+<p>现在可以打开浏览器，在<em>&ldquo;localhost:4000&rdquo;</em>预览我们的博客了</p>
+
+<h4>安装主题</h4>
+
+<p>我使用的是<a href="https://github.com/allenhsu/greyshade.git">Greyshade</a>,按照下面的操作就可以简单的安装和部署了</p>
+
+<pre><code>$ git clone git@github.com:allenhsu/greyshade.git .themes/greyshade
+$ echo "\$greyshade: color;" &gt;&gt; sass/custom/_colors.scss //Substitue 'color' with your highlight color
+$ rake install["greyshade"]
+$ rake generate
+</code></pre>
+
+<p>同样我们可以使用<em>“rake preview”</em>来预览</p>
+
+<p>设置头像，头像设置是在octopress/source/_includes/header.html里</p>
+
+<p>```html</p>
+
+<script src="/javascripts/md5.js"></script>
+
+
+<pre><code>&lt;script type="text/javascript"&gt;
+    document.write("&lt;img src='http://www.gravatar.com/avatar/" + MD5("") + "?s=160' alt='Profile Picture' style='width: 160px;' /&gt;");
+&lt;/script&gt;
+</code></pre>
+
+<pre><code>
+说两种方法
+
+* 一种就是将图片放置到图床[^2]上,替换上面代码中的***src***的内容
+* 还有一种就是本地存放，将头像放到octopress/source/images/中，将***src***的内容替换成***“/images/yours.png”***
+
+如果想更好的话就是把这段代码全部替换成一个***img***的代码，因为我们不需要脚本帮我们组合图片地址，更不需要计算md5码
+
+设置微博的话，我们只需要把下面的代码加入到_config.yml最下方就好了
+</code></pre>
+
+<p>weibo_user: baronny # 微博数字 ID 或域名 ID
+weibo_share: true # 是否开启微博分享按钮
+```</p>
+
+<p>微博域名一般就在这里：<strong><em>微博->个人->设置->个性域名</em></strong>，例如：***“<a href="http://weibo.com.yours%E2%80%9D***%EF%BC%8C">http://weibo.com.yours%E2%80%9D***%EF%BC%8C</a>"yours"就是你的域名ID</p>
+
+<p>现在我们就能预览到带有我们头像和信息、微博的微博了，下来我们写第一篇博文吧。</p>
+
+<pre><code>$ rake new_post["your_post"]  //your_post是你的博文名
+</code></pre>
+
+<p>自动生成的博文在octopress/source/_posts里，文件名以当前时间和你输入的博文名组成，例如：<strong><em>“2016-05-13-your-post.markdown”</em></strong>。
+现在就可以开始写第一篇博文了</p>
+
+<p>但是我们发现预览的速度很慢，这是由于模板和主题有使用google，Twitter等相关内容，墙的原因。。。</p>
+
+<p>首先将_config.yml里有关google和Twitter的东西都注释掉。然后将所有文件里引用到google公共库的地方都换成国内镜像<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
+,<strong><em>“ajax.googleapis.com/ajax/libs/”</em></strong>和<strong><em>“fonts.useso.com/css?”</em></strong></p>
+
+<p>将<strong><em>“octopress/source/_includes/custom/navigation.html”</em></strong>里面的内容修改成你想要的，类似于这样</p>
+
+<p>```html</p>
+
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">全部文章</a></li>
+</ul>
+
+
+<p>```</p>
+
+<p>侧边栏显示<strong><em>最新文章</em></strong>在<strong><em>“octopress/source/_includes/asides/”</em></strong>添加<strong><em>“recent_post.html”</em></strong>文件，在里面加入如下代码</p>
+
+<pre><code>&lt;section&gt;
+    &lt;h2&gt;最新文章&lt;/h2&gt;
+    &lt;ul id="recent_posts"&gt;
+        
+        &lt;li class="post"&gt;
+            &lt;a href="/blog/2016/05/13/makeupoctopress/"&gt;Github Pages上部署octopress个人博客&lt;/a&gt;
+        &lt;/li&gt;
+        
+    &lt;/ul&gt;
+&lt;/section&gt;
+</code></pre>
+
+<p>在<strong><em>octopress/source/_includes/header.html</em></strong>最下方加入代码</p>
+
+<pre><code><section>
+  <h2>最新文章</h2>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/13/makeupoctopress/">Github Pages上部署octopress个人博客</a>
+      </li>
+    
+  </ul>
+</section>
+
+</code></pre>
+
+<p>并且把<strong><em>octopress/source/_includes/custom/header.html</em></strong>里面的代码都删除</p>
+
+<p>在<strong><em>_config.yml</em></strong>修改<strong><em>“ecent_posts: 2”</em></strong>可以更改最新文章显示的最多条数</p>
+
+<p>侧边栏显示<strong><em>分类</em></strong>，创建<strong><em>“octopress/plugins/category_list.rb”</em></strong>文件，在里面加入如下代码</p>
+
+<pre><code># encoding: utf-8
+module Jekyll
+
+class Site
+
+def create_category_list
+  write_to_tag_cloud if @config['category_tag_cloud']
+  # write_to_sidebar if @config['category_sidebar']
+end
+
+private
+# generate category tag list and write to 'source/_includes/asides/categories_tag.html'
+def write_to_tag_cloud
+  puts ' =&gt; Creating Categories Tag Cloud'
+  lists = {}
+  max, min = 1, 1
+  self.categories.keys.sort_by{ |str| str.downcase }.each do |category|
+    count = self.categories[category].count
+    lists[category] = count
+    max = count if count &gt; max
+  end
+
+  html = ''
+  lists.each do | category, counter |
+    url = get_category_url category
+    if counter &lt; 20
+      setfontsize = 20
+    else
+      setfontsize = 80 * (Float(counter)/max)
+    end
+
+    setfontsize = 20 if setfontsize &lt; 20
+    style = "font-size: #{80 + setfontsize}%"
+    if @config['category_counter']
+      html &lt;&lt; " &lt;a href='#{url}' style='#{style}'&gt;#{category.capitalize}(#{self.categories[category].count})&lt;/a&gt; "
+    else
+      html &lt;&lt; " &lt;a href='#{url}' style='#{style}'&gt;#{category.capitalize}&lt;/a&gt; "
+    end
+  end
+
+  File.open(File.join(@source, '_includes/asides/categories_tag.html'), 'w') do |file|
+    file &lt;&lt; """
+&lt;section&gt;
+&lt;h2&gt;#{@config['category_title'] || 'Categories'}&lt;/h2&gt;
+&lt;span class='categories_tag'&gt;#{html}&lt;/span&gt;
+&lt;/section&gt;
+
+"""
+  end
+end
+
+# generate category lists and write to 'source/_includes/asides/categories_sidebar.html'
+def write_to_sidebar
+  puts ' =&gt; Creating Categories Sidebar'
+  html = "&lt;ul&gt;\n"
+  # case insensitive sorting
+  @categories.keys.sort_by{ |str| str.downcase }.each do |category|
+    url = get_category_url category
+    if @config['category_counter']
+      html &lt;&lt; "  &lt;li&gt;&lt;a href='#{url}'&gt;#{category.capitalize} (#{@categories[category].count})&lt;/a&gt;&lt;/li&gt;\n"
+    else
+      html &lt;&lt; "  &lt;li&gt;&lt;a href='#{url}'&gt;#{category.capitalize}&lt;/a&gt;&lt;/li&gt;\n"
+    end
+  end
+  html &lt;&lt; "&lt;/ul&gt;"
+  File.open(File.join(@source, '_includes/asides/categories_sidebar.html'), 'w') do |file|
+    file &lt;&lt; """
+&lt;section&gt;
+&lt;h1&gt;#{@config['category_title'] || 'Categories'}&lt;/h1&gt;
+#{html}
+&lt;/section&gt;
+
+"""
+  end
+end
+
+def get_category_url(category)
+  dir = @config['category_dir'] || 'categories'
+  File.join @config['root'], dir, category.to_url
+end
+end
+
+class CategoryList &lt; Generator
+safe true
+priority :low
+
+def generate(site)
+  puts "CategoryList begin genrate"
+  if site.config['category_list']
+    puts "## Generating Categories.."
+    site.create_category_list
+  end
+end
+end
+
+end
+</code></pre>
+
+<p>创建<strong><em>octopress/source/_includes/asides/categories_tag.html</em></strong>文件，并写入如下代码</p>
+
+<pre><code>
+&lt;section&gt;
+&lt;h2&gt;分類&lt;/h2&gt;
+&lt;/section&gt;
+
+</code></pre>
+
+<p>在<strong><em>_config.tml</em></strong>里面加入下方代码</p>
+
+<pre><code># ----------------------- #
+#    Categories           #
+# ----------------------- #
+# create categories page
+category_list: true
+# use counter after categories
+category_counter: true
+# category title
+category_title: 分類
+# create an include categories list in @source/_includes/asides/categories_sidebar.html
+# and don't forget to add 'asides/categories_sidebar.html' into @default_asides if you want to enable it.
+category_sidebar: true
+# create an include categories tag cloud page in @source/_includes/asides/categories_tag.html
+# and don't forget to add 'asides/categories_tag.html' to @default_asides if you want to enable it.
+category_tag_cloud: true
+</code></pre>
+
+<p>在<strong><em>octopress/source/_includes/header.html</em></strong>最下方加入代码</p>
+
+<pre><code>
+<section>
+<h2>分類</h2>
+<span class='categories_tag'> <a href='/blog/categories/octopress' style='font-size: 100%'>Octopress(1)</a> </span>
+</section>
+
+
+</code></pre>
+
+<p>如果想首页文章不全部显示的话，在想要截止显示的位置加入</p>
+
+<pre><code>&lt;!--more--&gt;
+</code></pre>
+
+<h4>布置到github</h4>
+
+<p>首先你需要将你本机的ssh绑定到github上，<a href="https://help.github.com/articles/generating-an-ssh-key/">GithubHelp</a>有详细说明，参照这个就好了。</p>
+
+<p>创建一个自己的仓库，名称为yours.github.com</p>
+
+<p>输入下面命令：</p>
+
+<pre><code>rake setup_github_pages
+</code></pre>
+
+<p>用来绑定你刚才创建的仓库，要求输入的时候输入你的仓库地址就好了，例如：<del><a href="https://github.com/yours/yours.github.com.git">https://github.com/yours/yours.github.com.git</a></del></p>
+
+<p>输入以下命令部署：</p>
+
+<pre><code>rake generate   //生成
+reke deploy     //提交部署
+</code></pre>
+
+<p>不要忘了前面说的命令：<code>rake preview</code>可以先本地预览下</p>
+
+<p>source文件夹要单独提交，以防以后迁移使用，使用下方代码就好，放到source分支</p>
+
+<pre><code>git add .
+git commit -m "commit source"
+git push origin source
+</code></pre>
+
+<p>大功告成，在浏览器里查看<code>yours.github.com</code>就可以看到我们刚刚创建的博客了</p>
+
+<h4>绑定自己的域名</h4>
+
+<p>如果没有域名的话，想要一个玩玩的话，推荐去<a href="https://wanwang.aliyun.com/domain/cn/?spm=5176.8006371.237031.157.ePk79f">万网</a>,很快就可以申请好，并且几分钟就可以解析完成。不过要是中国区的域名需要实名审核，一般两天内。</p>
+
+<p>域名有了的话，创建一个CNAME的二级域名，并解析，对应到你的github仓库地址，延续上面的话应该是：yours.github.io</p>
+
+<p>创建<strong><em>“octopress/source/CNAME”</em></strong>文件，并向里面写入你刚刚创建的CNAME二级域名，例如：<code>blog.yours.com</code>，不要带<a href="http://%E6%88%96%E8%80%85https://%E4%B9%8B%E7%B1%BB%E7%9A%84%E3%80%82">http://%E6%88%96%E8%80%85https://%E4%B9%8B%E7%B1%BB%E7%9A%84%E3%80%82</a></p>
+
+<pre><code>rake generate
+rake deploy
+</code></pre>
+
+<p>提交成功后，等待十分钟左右，打开网页要是能看见我们自己的博客就大工搞成！！！</p>
+
+<h4>octopress结构</h4>
+
+<pre><code>├─ config.rb  #指定额外的compass插件
+├─ config.ru  
+├─ Rakefile   #rake的配置文件,类似于makefile
+├─ Gemfile    #bundle要下载需要的gem依赖关系的指定文件
+├─ Gemfile.lock  #这些gem依赖的对应关系,比如A的x本依赖于B的y版本
+├─ _config.yml   #站点的配置文件
+├─ public/    #在静态编译完成后的目录,网站只需要这个目录下的文件树
+├─ _deploy/   #deploy时候生成的缓存文件夹,和public目录一样
+├─ sass/      #css文件的源文件,过程中会compass成css
+├─ plugins/   #放置自带以及第三方插件的目录,ruby程序
+│  └── xxx.rb
+└─ source/    #站点的源文件目录,public目录就是根据这个目录下数据生成的
+    └─ _includes/
+      └─ custom/      #自定义的模板目录,被相应上级html include
+         └─ asides/   #边栏模板自定义模板目录
+      └─ asides/      #边栏模板目录
+      └─ post/        #文章页面相应模板目录
+   └─ _layouts/       #默认网站html相关文件,最底层
+   └─ _posts/         #新增以及从其它程序迁移过来的数据都存在这里
+   └─ stylesheets/    #css文件目录
+   └─ javascripts/    #js文件目录
+   └─ images/         #图片目录
+</code></pre>
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p>octopress的主题放置在octopress/.themes/<a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+<li id="fn:2">
+<p><a href="http://cdn.code.baidu.com/">百度静态镜像</a><a href="#fnref:2" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
+
 ]]></content>
   </entry>
   
