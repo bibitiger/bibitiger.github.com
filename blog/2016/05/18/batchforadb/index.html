@@ -7,7 +7,7 @@
 	<meta name="author" content="bibitiger">
 
 	
-	<meta name="description" content=" 用Batch和adb做App控制器 ">
+	<meta name="description" content="用Batch和adb做App控制器 原文地址：blog.bibitiger.cn/blog/2016/05/13/makeupoctopress/ 最近要为我们的设备做一个windows桌面控制器。首先我们的设备是基于android系统的，说白了就是android系统里面只装了我们一个APP。 &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -50,6 +50,9 @@
 	<div class="social">
 		
 		<a class="weibo" href="http://www.weibo.com/baronny" title="Weibo">Weibo</a>
+		
+		
+		<a class="jianshu" href="http://www.jianshu.com/users/f4d8eff68965/latest_articles" title="Jianshu">Jianshu</a>
 		
 		
 		
@@ -103,7 +106,237 @@
 			<div class="mid-col-container">
 				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 	<h1 class="title" itemprop="name">用Batch和adb做App控制器</h1>
-	<div class="entry-content" itemprop="articleBody">
+	<div class="entry-content" itemprop="articleBody"><h2>原文地址：<a href="blog.bibitiger.cn/blog/2016/05/18/batchforadb/">blog.bibitiger.cn/blog/2016/05/13/makeupoctopress/</a></h2>
+
+<p></br></p>
+
+<hr />
+
+<p></br>
+最近要为我们的设备做一个windows桌面控制器。首先我们的设备是基于android系统的，说白了就是android系统里面只装了我们一个APP。由于我们的设备没有屏幕（我们自己去掉了，做智能硬件的应该了解，成本能省一点省一点），周期比较近的缘故没有时间做UI，于是突发奇想不如干脆就做个批处理脚本吧。为什么会有这样的想法呢？首先android的adb功能很强大，做过android自动化测试的应该知道现在主流的用到的pc和android通信的方式就两种，一种是socket，一种就是adb了，比如google的UIAutomator就是用adb dump出来布局文件，所以adb直接和pc通信应该是没有太大问题的；其次APP是我们自己写的，换言之就是说我们可以自定义intent，而不需要通过反射啊什么的很麻烦的手段就能产生交互。</p>
+
+<!--more-->
+
+
+<p>既然主意打定了，下一步就要开始干了，首先将Intent的命名，参数什么都订好，APP里面做好支持等等，这些业务相关的和APP本身的工作。我们已经确定了通过Intent给APP传输指令，那接下来的问题就是指令动作结束之后如何回告pc端动作结果。显然通过adb我们能够轻易的获取到log信息，而对log进行格式化按照我们的协议经行输出我们就可以简单的做到获取动作结果。下来就先看下怎么获取我们想要得到的log吧。</p>
+
+<p>确定我们的pc上装有adb，判断下adb的版本就好了</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='batch'><span class='line'><span class="p">@</span>adb version <span class="p">&gt;</span><span class="n">nul</span>
+</span><span class='line'><span class="k">if</span> <span class="nv">%errorlevel%</span> <span class="o">neq</span> <span class="m">0</span> (<span class="k">echo</span> adb 已存在)
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果想要查看adb的版本信息，使用for就可以</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='batch'><span class='line'><span class="k">for</span> <span class="n">/f</span> <span class="s2">&quot;tokens=1* delims=:&quot;</span> <span class="nv">%%i</span> in (<span class="s1">&#39;adb version 2^&gt;nul&#39;</span>) <span class="k">do</span> <span class="k">set</span> <span class="nv">adb_version</span><span class="o">=</span><span class="nv">%%i</span>
+</span><span class='line'><span class="k">echo</span> 当前adb版本为“<span class="nv">%adb_version%</span>”
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果没有安装adb的话，需要安装下，然后在环境变量里添加，要是想让脚本直接完成的话也是可以的，解压adb，在注册表里修改path就行</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='batch'><span class='line'>reg add <span class="s2">&quot;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment&quot;</span> <span class="n">/v</span> Path <span class="n">/t</span> REG_EXPAND_SZ <span class="n">/d</span> <span class="s2">&quot;%path%;%path_adb%&quot;</span> <span class="n">/f</span> <span class="m">1</span><span class="p">&gt;</span><span class="n">nul</span> <span class="m">2</span><span class="p">&gt;</span><span class="n">nul</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果我们连接着多个android设备的时候还要经行选择,我这里默认最多有10个设备</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='batch'><span class='line'><span class="k">set</span> <span class="nv">device_num</span><span class="o">=</span><span class="m">1</span>
+</span><span class='line'><span class="k">for</span> <span class="n">/f</span> <span class="s2">&quot;tokens=1,2 delims=    &quot;</span> <span class="nv">%%j</span> in (<span class="s1">&#39;adb devices&#39;</span>) <span class="k">do</span> (
+</span><span class='line'><span class="k">set</span> <span class="nv">device_</span>!device_num!<span class="o">=</span><span class="nv">%%j</span>
+</span><span class='line'><span class="k">set</span> <span class="n">/a</span> device_num+<span class="o">=</span><span class="m">1</span>
+</span><span class='line'><span class="k">if</span> !device_num! <span class="o">GTR</span> <span class="m">10</span>
+</span><span class='line'>)
+</span><span class='line'>
+</span><span class='line'><span class="k">set</span> <span class="n">/a</span> device_num-<span class="o">=</span><span class="m">1</span>
+</span><span class='line'><span class="k">set</span> <span class="nv">chose_cmd</span><span class="o">=</span><span class="k">choice</span> <span class="n">/N</span> <span class="n">/c:</span>
+</span><span class='line'><span class="k">if</span> <span class="nv">%device_num%</span><span class="o">==</span><span class="m">0</span> <span class="k">echo</span> 未找到可用设备 &amp;&amp; <span class="k">pause</span> &amp;&amp; exit
+</span><span class='line'><span class="k">if</span> <span class="nv">%device_num%</span><span class="o">==</span><span class="m">1</span> ( <span class="k">set</span> <span class="n">/a</span> device_id_rem<span class="o">=</span><span class="m">1</span> ) <span class="k">else</span> (
+</span><span class='line'><span class="k">echo</span> 设备列表：
+</span><span class='line'><span class="k">for</span> <span class="n">/l</span> <span class="nv">%%i</span> in (<span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="nv">%device_num%</span>) <span class="k">do</span> <span class="k">echo</span> 设备[ <span class="nv">%%i</span> ]：!device_<span class="nv">%%i</span>! &amp;&amp; <span class="k">set</span> <span class="nv">chose_cmd</span><span class="o">=</span>!chose_cmd!<span class="nv">%%i</span>
+</span><span class='line'><span class="k">echo</span> 请从上面列表中选择要操作的设备<span class="p">,</span>输入设备编号：
+</span><span class='line'>!chose_cmd!
+</span><span class='line'><span class="k">set</span> <span class="n">/a</span> device_id_rem<span class="o">=</span>!<span class="k">errorlevel</span>!
+</span><span class='line'>)
+</span><span class='line'><span class="k">for</span> <span class="n">/f</span> <span class="s2">&quot;tokens=2,3 delims=_=&quot;</span> <span class="nv">%%i</span> in (<span class="s1">&#39;set device_&#39;</span>) <span class="k">do</span> (
+</span><span class='line'><span class="k">if</span> <span class="nv">%%i</span><span class="o">==</span>!device_id_rem! <span class="k">set</span> <span class="nv">chose_device</span><span class="o">=</span>!device_<span class="nv">%%i</span>!)
+</span><span class='line'><span class="k">echo</span> <span class="s2">&quot;当前使用设备是：!chose_device!&quot;</span>
+</span><span class='line'><span class="k">echo</span>.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>因为我们只要我们指定APP的log，所以在一开始的时候就将不是我们APP的log信息过滤掉，通过进程的pid就能搞定，先从我们的APP包名找到APP的pid</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='batch'><span class='line'><span class="k">for</span> <span class="n">/f</span> <span class="s2">&quot;tokens=*&quot;</span> <span class="nv">%%i</span> in (<span class="s1">&#39;adb -s %chose_device% shell ps ^|find &quot;com.android.example&quot;&#39;</span>) <span class="k">do</span> (
+</span><span class='line'><span class="k">set</span> <span class="nv">pid</span><span class="o">=</span><span class="nv">%%i</span>
+</span><span class='line'><span class="k">set</span> <span class="nv">pid</span><span class="o">=</span>!pid:~<span class="m">10</span><span class="p">,</span><span class="m">5</span>!
+</span><span class='line'>)
+</span><span class='line'><span class="k">echo</span> 没找到APP，请检查APP是否开启 &amp;&amp; <span class="k">pause</span> &amp;&amp; exit
+</span><span class='line'><span class="k">set</span> <span class="n">/a</span> pid<span class="o">=</span><span class="nv">%pid%</span>+<span class="m">0</span> rem 这里拿到的pid本身是默认的字符串，转换为数字，下面做比较的时候方便使用
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>假如我们设定的log格式是这样的：[2016-03-15 13:42:10] ,E,tag,[ main: xx.java:5 xxx ], 0#0#0</p>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:center;">[2016-03-15 13:42:10]</th>
+<th style="text-align:center;"> E </th>
+<th style="text-align:center;"> tag </th>
+<th style="text-align:center;"> [ main: xx.java:5 xxx ] </th>
+<th style="text-align:center;"> 0#0#0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">日期         </td>
+<td style="text-align:center;"> 类型        </td>
+<td style="text-align:center;"> 标签 </td>
+<td style="text-align:center;"> 代码地址 </td>
+<td style="text-align:center;"> 内容（arg1#arg2#arg3）</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>第五列是真正的内容，那我们首先提取出第五列的内容，标签表示这个log是否是我们要的log</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='batch'><span class='line'><span class="k">set</span> <span class="nv">app_out_tag</span><span class="o">=</span>test rem 设置我们想要的标签，例如这里设置为test
+</span><span class='line'><span class="nl">:find_out_put</span>
+</span><span class='line'><span class="k">set</span> <span class="nv">outtag</span><span class="o">=</span><span class="n">/\</span>  rem 等待进度条
+</span><span class='line'><span class="k">echo</span> 等待执行结果：
+</span><span class='line'><span class="nl">:find_out_put_entity</span>
+</span><span class='line'><span class="k">set</span> <span class="n">/p=%outtag%&lt;nul</span>
+</span><span class='line'><span class="k">set</span> <span class="nv">msg_num</span> <span class="o">=</span> <span class="m">1</span>
+</span><span class='line'><span class="k">for</span> <span class="n">/f</span> <span class="s2">&quot;tokens=3,4,5 delims=,&quot;</span> <span class="nv">%%i</span> in (<span class="s1">&#39;adb -s %chose_device% logcat -t 5000 ^|find &quot;%pid%&quot;&#39;</span>) <span class="k">do</span> (
+</span><span class='line'><span class="k">set</span> <span class="nv">msg_return</span><span class="o">=</span><span class="nv">%%k</span> rem msg_return就是我们log里的内容
+</span><span class='line'><span class="k">if</span> <span class="s2">&quot;%%i&quot;</span><span class="o">==</span><span class="s2">&quot;%app_out_tag%&quot;</span> <span class="k">echo</span>. &amp;&amp; <span class="k">goto</span> <span class="nl">due_with_result</span> rem 找到了对应的log，走入下一步，处理log的内容
+</span><span class='line'><span class="k">set</span> <span class="n">/a</span> msg_num+<span class="o">=</span><span class="m">1</span>
+</span><span class='line'>)
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>解析log的内容，找到每一个arg，就可以做业务相关的事情了</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='batch'><span class='line'><span class="nl">:due_with_result</span>
+</span><span class='line'><span class="k">for</span> <span class="n">/f</span> <span class="s2">&quot;tokens=1,2,3 delims=:#&quot;</span> <span class="nv">%%a</span> in (<span class="s2">&quot;%msg_return%&quot;</span>) <span class="k">do</span> (
+</span><span class='line'><span class="k">echo</span> arg<span class="m">1</span><span class="o">=</span><span class="nv">%%a</span>
+</span><span class='line'><span class="k">echo</span> arg<span class="m">2</span><span class="o">=</span><span class="nv">%%b</span>
+</span><span class='line'><span class="k">echo</span> arg<span class="m">3</span><span class="o">=</span><span class="nv">%%c</span>
+</span><span class='line'><span class="k">echo</span> 想干什么就干吧
+</span><span class='line'>)
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>现在我们就发一条Intent开始pc和APP的交流之旅吧,注意发送前清空下log缓存啊</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='batch'><span class='line'>adb -s <span class="nv">%chose_device%</span> logcat -c
+</span><span class='line'>adb -s <span class="nv">%chose_device%</span> shell am broadcast -a com.test.intent <span class="p">&gt;</span><span class="n">nul</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>另：彩蛋两个</p>
+
+<p>彩色字：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='batch'><span class='line'><span class="c">rem args:[1]:color string,不能包含 /\:*?&quot;&lt;&gt;|;[2]normol string;[3]color 参考 cmd color /?</span>
+</span><span class='line'><span class="nl">:colorStrNewLine</span>
+</span><span class='line'><span class="k">call</span><span class="nl">:colorStr</span> <span class="nv">%1</span> <span class="nv">%2</span> <span class="nv">%3</span>
+</span><span class='line'><span class="k">echo</span>.
+</span><span class='line'><span class="k">goto</span> <span class="nl">:eof</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">rem args:[1]:color string,不能包含 /\:*?&quot;&lt;&gt;|;[2]normol string;[3]color 参考 cmd color /?</span>
+</span><span class='line'><span class="nl">:colorStr</span>
+</span><span class='line'><span class="k">set</span> <span class="n">/p=%2&lt;nul&gt;%1</span> <span class="m">2</span><span class="p">&gt;</span><span class="n">nul</span>
+</span><span class='line'>
+</span><span class='line'>findstr <span class="n">/a:%3</span> .* <span class="nv">%1</span>* <span class="m">2</span><span class="p">&gt;</span><span class="n">nul</span>
+</span><span class='line'><span class="k">del</span> <span class="nv">%1</span>
+</span><span class='line'><span class="k">goto</span> <span class="nl">:eof</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>延时：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='batch'><span class='line'><span class="c">rem args:[1]:seconds wait</span>
+</span><span class='line'><span class="nl">:sleep</span>
+</span><span class='line'><span class="k">choice</span> <span class="n">/N</span> <span class="n">/C</span> y <span class="n">/T</span> <span class="nv">%1</span> <span class="n">/D</span> y<span class="p">&gt;</span><span class="n">nul</span>
+</span><span class='line'><span class="k">goto</span> <span class="nl">:eof</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
 </div>
 
 </article>
