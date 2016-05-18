@@ -115,3 +115,4 @@ disqus_show_comment_count: false
 weibo_user: baronny # 微博数字 ID 或域名 ID
 dribbble_user: baronny
 weibo_share: true # 是否开启微博分享按钮
+jian_user: f4d8eff68965 # 简书 ID

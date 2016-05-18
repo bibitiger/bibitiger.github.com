@@ -328,6 +328,13 @@ $header-height: 30px;
 					border: 1px solid darken(#e32529, 10%);
 				}
 			}
+			&.jianshu{
+				background: image-url('social/jian.png') center no-repeat #e32529;
+				border: 1px solid #e32529;
+				&:hover{
+					border: 1px solid darken(#e32529, 10%);
+				}
+			}
 			&.dribbble{
 				background: image-url('social/dribbble.png') center no-repeat #c5376d;
 				border: 1px solid #c5376d;

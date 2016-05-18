@@ -1,0 +1,149 @@
+---
+layout: post
+title: "用Batch和adb做App控制器"
+date: 2016-05-18 21:41:21 +0800
+comments: true
+categories: "android"
+---
+
+##原文地址：[blog.bibitiger.cn/blog/2016/05/13/makeupoctopress/](blog.bibitiger.cn/blog/2016/05/18/batchforadb/)
+
+</br>
+
+---
+
+</br>
+最近要为我们的设备做一个windows桌面控制器。首先我们的设备是基于android系统的，说白了就是android系统里面只装了我们一个APP。由于我们的设备没有屏幕（我们自己去掉了，做智能硬件的应该了解，成本能省一点省一点），周期比较近的缘故没有时间做UI，于是突发奇想不如干脆就做个批处理脚本吧。为什么会有这样的想法呢？首先android的adb功能很强大，做过android自动化测试的应该知道现在主流的用到的pc和android通信的方式就两种，一种是socket，一种就是adb了，比如google的UIAutomator就是用adb dump出来布局文件，所以adb直接和pc通信应该是没有太大问题的；其次APP是我们自己写的，换言之就是说我们可以自定义intent，而不需要通过反射啊什么的很麻烦的手段就能产生交互。
+
+<!--more-->
+
+既然主意打定了，下一步就要开始干了，首先将Intent的命名，参数什么都订好，APP里面做好支持等等，这些业务相关的和APP本身的工作。我们已经确定了通过Intent给APP传输指令，那接下来的问题就是指令动作结束之后如何回告pc端动作结果。显然通过adb我们能够轻易的获取到log信息，而对log进行格式化按照我们的协议经行输出我们就可以简单的做到获取动作结果。下来就先看下怎么获取我们想要得到的log吧。
+
+确定我们的pc上装有adb，判断下adb的版本就好了
+
+```batch
+@adb version >nul
+if %errorlevel% neq 0 (echo adb 已存在)
+```
+
+如果想要查看adb的版本信息，使用for就可以
+
+```batch
+for /f "tokens=1* delims=:" %%i in ('adb version 2^>nul') do set adb_version=%%i
+echo 当前adb版本为“%adb_version%”
+```
+
+如果没有安装adb的话，需要安装下，然后在环境变量里添加，要是想让脚本直接完成的话也是可以的，解压adb，在注册表里修改path就行
+
+```batch
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v Path /t REG_EXPAND_SZ /d "%path%;%path_adb%" /f 1>nul 2>nul
+```
+
+如果我们连接着多个android设备的时候还要经行选择,我这里默认最多有10个设备
+
+```batch
+set device_num=1
+for /f "tokens=1,2 delims=	" %%j in ('adb devices') do ( 
+set device_!device_num!=%%j
+set /a device_num+=1
+if !device_num! GTR 10
+)
+
+set /a device_num-=1
+set chose_cmd=choice /N /c:
+if %device_num%==0 echo 未找到可用设备 && pause && exit
+if %device_num%==1 ( set /a device_id_rem=1 ) else ( 
+echo 设备列表：
+for /l %%i in (1,1,%device_num%) do echo 设备[ %%i ]：!device_%%i! && set chose_cmd=!chose_cmd!%%i
+echo 请从上面列表中选择要操作的设备,输入设备编号：
+!chose_cmd!
+set /a device_id_rem=!errorlevel!
+)
+for /f "tokens=2,3 delims=_=" %%i in ('set device_') do (
+if %%i==!device_id_rem! set chose_device=!device_%%i!)
+echo "当前使用设备是：!chose_device!"
+echo.
+```
+
+因为我们只要我们指定APP的log，所以在一开始的时候就将不是我们APP的log信息过滤掉，通过进程的pid就能搞定，先从我们的APP包名找到APP的pid
+
+```batch
+for /f "tokens=*" %%i in ('adb -s %chose_device% shell ps ^|find "com.android.example"') do (
+set pid=%%i
+set pid=!pid:~10,5!
+)
+echo 没找到APP，请检查APP是否开启 && pause && exit
+set /a pid=%pid%+0 rem 这里拿到的pid本身是默认的字符串，转换为数字，下面做比较的时候方便使用
+```
+
+假如我们设定的log格式是这样的：[2016-03-15 13:42:10] ,E,tag,[ main: xx.java:5 xxx ], 0#0#0
+
+[2016-03-15 13:42:10]| E | tag | [ main: xx.java:5 xxx ] | 0#0#0
+:-----------: | :-----------: | :-----------: | :-----------: | :-----------:
+日期         | 类型        | 标签 | 代码地址 | 内容（arg1#arg2#arg3）
+
+第五列是真正的内容，那我们首先提取出第五列的内容，标签表示这个log是否是我们要的log
+
+```batch
+set app_out_tag=test rem 设置我们想要的标签，例如这里设置为test
+:find_out_put
+set outtag=/\  rem 等待进度条
+echo 等待执行结果：
+:find_out_put_entity
+set /p=%outtag%<nul
+set msg_num = 1
+for /f "tokens=3,4,5 delims=," %%i in ('adb -s %chose_device% logcat -t 5000 ^|find "%pid%"') do ( 
+set msg_return=%%k rem msg_return就是我们log里的内容
+if "%%i"=="%app_out_tag%" echo. && goto due_with_result rem 找到了对应的log，走入下一步，处理log的内容 
+set /a msg_num+=1
+)
+```
+
+解析log的内容，找到每一个arg，就可以做业务相关的事情了
+
+```batch
+:due_with_result
+for /f "tokens=1,2,3 delims=:#" %%a in ("%msg_return%") do ( 
+echo arg1=%%a
+echo arg2=%%b
+echo arg3=%%c
+echo 想干什么就干吧
+)
+```
+
+现在我们就发一条Intent开始pc和APP的交流之旅吧,注意发送前清空下log缓存啊
+
+```batch
+adb -s %chose_device% logcat -c
+adb -s %chose_device% shell am broadcast -a com.test.intent >nul
+```
+
+另：彩蛋两个
+
+彩色字：
+
+```batch
+rem args:[1]:color string,不能包含 /\:*?"<>|;[2]normol string;[3]color 参考 cmd color /?
+:colorStrNewLine
+call:colorStr %1 %2 %3
+echo.
+goto :eof
+
+rem args:[1]:color string,不能包含 /\:*?"<>|;[2]normol string;[3]color 参考 cmd color /?
+:colorStr
+set /p=%2<nul>%1 2>nul
+
+findstr /a:%3 .* %1* 2>nul
+del %1
+goto :eof
+```
+
+延时：
+
+```batch
+rem args:[1]:seconds wait
+:sleep
+choice /N /C y /T %1 /D y>nul
+goto :eof
+```
+
