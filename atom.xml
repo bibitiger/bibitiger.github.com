@@ -4,7 +4,7 @@
   <title><![CDATA[bibitiger的博客]]></title>
   <link href="http://bibitiger.github.io/atom.xml" rel="self"/>
   <link href="http://bibitiger.github.io/"/>
-  <updated>2016-05-15T06:26:50+08:00</updated>
+  <updated>2016-05-18T21:42:05+08:00</updated>
   <id>http://bibitiger.github.io/</id>
   <author>
     <name><![CDATA[bibitiger]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[用Batch和adb做App控制器]]></title>
+    <link href="http://bibitiger.github.io/blog/2016/05/18/batchforadb/"/>
+    <updated>2016-05-18T21:41:21+08:00</updated>
+    <id>http://bibitiger.github.io/blog/2016/05/18/batchforadb</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[github Pages上部署octopress个人博客]]></title>
