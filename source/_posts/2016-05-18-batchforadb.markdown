@@ -6,7 +6,7 @@ comments: true
 categories: "android"
 ---
 
-##原文地址：[blog.bibitiger.cn/blog/2016/05/13/makeupoctopress/](blog.bibitiger.cn/blog/2016/05/18/batchforadb/)
+##原文地址：[blog.bibitiger.cn/blog/2016/05/18/batchforadb/](blog.bibitiger.cn/blog/2016/05/18/batchforadb/)
 
 </br>
 
