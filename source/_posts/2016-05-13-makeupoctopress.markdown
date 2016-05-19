@@ -7,7 +7,7 @@ categories: "octopress"
 ---
 
 
-##原文地址：[blog.bibitiger.cn/blog/2016/05/13/makeupoctopress/](blog.bibitiger.cn/blog/2016/05/13/makeupoctopress/)
+##原文地址：[blog.bibitiger.cn/blog/2016/05/13/makeupoctopress/](http://blog.bibitiger.cn/blog/2016/05/13/makeupoctopress/)
 
 <br/>
 
