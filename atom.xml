@@ -4,7 +4,7 @@
   <title><![CDATA[bibitiger的博客]]></title>
   <link href="http://bibitiger.github.io/atom.xml" rel="self"/>
   <link href="http://bibitiger.github.io/"/>
-  <updated>2017-02-21T15:12:00+08:00</updated>
+  <updated>2017-02-21T15:27:44+08:00</updated>
   <id>http://bibitiger.github.io/</id>
   <author>
     <name><![CDATA[bibitiger]]></name>
@@ -12,6 +12,32 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[随笔“南行“]]></title>
+    <link href="http://bibitiger.github.io/blog/2017/02/21/to-south/"/>
+    <updated>2017-02-21T15:19:29+08:00</updated>
+    <id>http://bibitiger.github.io/blog/2017/02/21/to-south</id>
+    <content type="html"><![CDATA[<h2>原文地址：<a href="http://blog.bibitiger.cn/blog/2017/02/21/to-south/">blog.bibitiger.cn/blog/2017/02/21/to-south/</a></h2>
+
+<p></br></p>
+
+<hr />
+
+<p></br></p>
+
+<h3>南行</h3>
+
+<p><br>
+单骑绝尘路</p>
+
+<p>亭台挂玉珠</p>
+
+<p>一剑江湖笑</p>
+
+<p>再剑笑江湖</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[将已有octopress从github搬移到本地]]></title>
