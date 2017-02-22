@@ -277,6 +277,8 @@ multitask :push do
     puts "\n## Pushing generated #{deploy_dir} website"
     Bundler.with_clean_env { system "git push origin #{deploy_branch}" }
     puts "\n## Github Pages deploy complete"
+    system "git checkout -b gitcafe-pages"
+    Bundler.with_clean_env { system "git push coding master:gitcafe-pages" }
   end
 end
 
