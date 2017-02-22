@@ -4,7 +4,7 @@
   <title><![CDATA[bibitiger的博客]]></title>
   <link href="http://bibitiger.github.io/atom.xml" rel="self"/>
   <link href="http://bibitiger.github.io/"/>
-  <updated>2017-02-22T22:59:20+08:00</updated>
+  <updated>2017-02-22T23:03:00+08:00</updated>
   <id>http://bibitiger.github.io/</id>
   <author>
     <name><![CDATA[bibitiger]]></name>
@@ -51,7 +51,7 @@
 <hr />
 
 <p></br>
-当我们换了电脑或者遗失了原本项目的时候，我们就需要将原来我们部署在github上的octopress博客重新搬移到本地。这里我们根据之前建立octopress项目的过程，首先清楚两个分支各自的功能：</p>
+test当我们换了电脑或者遗失了原本项目的时候，我们就需要将原来我们部署在github上的octopress博客重新搬移到本地。这里我们根据之前建立octopress项目的过程，首先清楚两个分支各自的功能：</p>
 
 <table>
 <thead>
