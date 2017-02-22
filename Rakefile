@@ -270,6 +270,7 @@ multitask :push do
   puts "\n## Copying #{public_dir} to #{deploy_dir}"
   cp_r "#{public_dir}/.", deploy_dir
   cd "#{deploy_dir}" do
+    system "git checkout #{deploy_branch}"
     system "git add -A"
     message = "Site updated at #{Time.now.utc}"
     puts "\n## Committing: #{message}"
@@ -277,8 +278,14 @@ multitask :push do
     puts "\n## Pushing generated #{deploy_dir} website"
     Bundler.with_clean_env { system "git push origin #{deploy_branch}" }
     puts "\n## Github Pages deploy complete"
-    system "git checkout -b gitcafe-pages"
-    Bundler.with_clean_env { system "git push coding master:gitcafe-pages" }
+    # system "git checkout coding-pages"
+    # system "git add -A"
+    # message = "Site updated at #{Time.now.utc}"
+    # puts "\n## Committing: #{message}"
+    # system "git commit -m \"#{message}\""
+    # puts "\n## Pushing generated #{deploy_dir} website"
+    Bundler.with_clean_env { system "git push coding master:coding-pages" }
+    puts "\n## coding.net Pages deploy complete"
   end
 end
 
