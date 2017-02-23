@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://bibitiger.github.io/sitemap.xml 
+Sitemap: http://blog.bibitiger.cn/sitemap.xml 
