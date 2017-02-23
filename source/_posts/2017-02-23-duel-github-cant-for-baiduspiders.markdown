@@ -6,6 +6,8 @@ comments: true
 categories: "Octopress"
 ---
 
+##原文地址：[http://blog.bibitiger.cn/blog/2017/02/23/duel-github-cant-for-baiduspiders/](http://blog.bibitiger.cn/blog/2017/02/23/duel-github-cant-for-baiduspiders/)
+
 <br>
 
 ---
