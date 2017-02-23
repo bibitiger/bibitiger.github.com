@@ -14,6 +14,8 @@ categories: "Octopress"
 
 网上已经有很多关于这个问题的解决方案,例如CDN到七牛等的镜像缓存、修改ip代理、云服务器等等，例如[知乎上的问答“如何解决百度爬虫无法爬取搭建在Github上的个人博客的问题？”](https://www.zhihu.com/question/30898326/answer/137735246)，在此就不一一复述了。直接说一个方便的解决方案。
 
+<!--more-->
+
 我在[github-page](https://help.github.com/articles/what-is-github-pages/)上放的是个人博客，主要就是国内用用，实在是英文不怎么样。使用[octopress](http://octopress.org/)搭建，其实就是静态网页。在这个前提下，那如果我们找一个支持静态网站的空间同步github，并且我们的域名支持智能DNS，那问题是不是很好解决。原来的gitcafe现在的[coding.net](https://coding.net/gitcafe.html)就能很好的解决这个问题，而且他现在还支持jekyll。正好我的域名是用的[万网](https://wanwang.aliyun.com/?spm=5176.3047821.1.3.aV9BIt)，支持智能DNS。
 
 好了，废话说完，开始干活。
