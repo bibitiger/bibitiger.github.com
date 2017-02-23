@@ -7,7 +7,7 @@
 	<meta name="author" content="bibitiger">
 
 	
-	<meta name="description" content=" 解决github-pages无法被百度抓取问题（octopress） 网上已经有很多关于这个问题的解决方案 ">
+	<meta name="description" content="解决github-pages无法被百度抓取问题（octopress） 网上已经有很多关于这个问题的解决方案,例如CDN到七牛等的镜像缓存、修改ip代理、云服务器等等，例如知乎上的问答“如何解决百度爬虫无法爬取搭建在Github上的个人博客的问题？”，在此就不一一复述了。直接说一个方便的解决方案 &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -113,7 +113,110 @@
 
 <p></br></p>
 
-<p>网上已经有很多关于这个问题的解决方案</p>
+<p>网上已经有很多关于这个问题的解决方案,例如CDN到七牛等的镜像缓存、修改ip代理、云服务器等等，例如<a href="https://www.zhihu.com/question/30898326/answer/137735246">知乎上的问答“如何解决百度爬虫无法爬取搭建在Github上的个人博客的问题？”</a>，在此就不一一复述了。直接说一个方便的解决方案。</p>
+
+<p>我在<a href="https://help.github.com/articles/what-is-github-pages/">github-page</a>上放的是个人博客，主要就是国内用用，实在是英文不怎么样。使用<a href="http://octopress.org/">octopress</a>搭建，其实就是静态网页。在这个前提下，那如果我们找一个支持静态网站的空间同步github，并且我们的域名支持智能DNS，那问题是不是很好解决。原来的gitcafe现在的<a href="https://coding.net/gitcafe.html">coding.net</a>就能很好的解决这个问题，而且他现在还支持jekyll。正好我的域名是用的<a href="https://wanwang.aliyun.com/?spm=5176.3047821.1.3.aV9BIt">万网</a>，支持智能DNS。</p>
+
+<p>好了，废话说完，开始干活。</p>
+
+<p>首先注册一个coding.net的账号，老路数了。接着建立一个跟账号用户名同名的仓库，例如
+<code>https://git.coding.net/username/username.git</code></p>
+
+<p>在terminal下打开原有octopress的地址（假定这个地址就是octopress，以后都是用这个地址为根目录），到octopress/_deploy目录下，添加coding.net的远程地址，并且新建分支。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd octopress/_deploy
+</span><span class='line'>git remote add coding https://git.coding.net/username/username.git
+</span><span class='line'>git checkout -b coding-pages
+</span><span class='line'>git checkout master
+</span><span class='line'>git branch
+</span><span class='line'>&gt;  coding-pages
+</span><span class='line'>&gt;  * master
+</span><span class='line'>git push coding master/coding-pages</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在coding.net的仓库里设置pages的分支</p>
+
+<p><img src="http://7xtz1f.com2.z0.glb.clouddn.com/duel-github-cant-for-baiduspiders/11.png-shuiyinBlack" alt="set_coding_pages" /></p>
+
+<p>保存了分支之后，打开<code>http://username.coding.me/username</code>就能看到我们的博客了。</p>
+
+<p>接着去万网设置域名解析，将原来的github设置为海外，新加一个CNAME类型的记录为pages.coding.me设为默认。</p>
+
+<p><img src="http://7xtz1f.com2.z0.glb.clouddn.com/duel-github-cant-for-baiduspiders/22.png-shuiyinBlack" alt="set_coding_pages" /></p>
+
+<p>一般十分钟之内生效，生效后回到coding去设置<code>自定义域名</code>，输入刚才解析的二级域名，绑定完成。</p>
+
+<p>告一段落，这个时候你ping自己的域名地址，同步到coding已经完成，会发现和原来的ip不一样了。</p>
+
+<p>但是如果我们每次deploy之后，都要去手动再给coding提交一次，很麻烦，所以索性直接写到rakefile里去。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">multitask</span> <span class="ss">:push</span> <span class="k">do</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;## Deploying branch to Github Pages &quot;</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;## Pulling any updates from Github Pages &quot;</span>
+</span><span class='line'>  <span class="n">cd</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">deploy_dir</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="no">Bundler</span><span class="o">.</span><span class="n">with_clean_env</span> <span class="p">{</span> <span class="nb">system</span> <span class="s2">&quot;git pull origin </span><span class="si">#{</span><span class="n">deploy_branch</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="p">(</span><span class="no">Dir</span><span class="o">[</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">deploy_dir</span><span class="si">}</span><span class="s2">/*&quot;</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="n">rm_rf</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="no">Rake</span><span class="o">::</span><span class="no">Task</span><span class="o">[</span><span class="ss">:copydot</span><span class="o">].</span><span class="n">invoke</span><span class="p">(</span><span class="n">public_dir</span><span class="p">,</span> <span class="n">deploy_dir</span><span class="p">)</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">## Copying </span><span class="si">#{</span><span class="n">public_dir</span><span class="si">}</span><span class="s2"> to </span><span class="si">#{</span><span class="n">deploy_dir</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="n">cp_r</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">public_dir</span><span class="si">}</span><span class="s2">/.&quot;</span><span class="p">,</span> <span class="n">deploy_dir</span>
+</span><span class='line'>  <span class="n">cd</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">deploy_dir</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="nb">system</span> <span class="s2">&quot;git checkout </span><span class="si">#{</span><span class="n">deploy_branch</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="nb">system</span> <span class="s2">&quot;git add -A&quot;</span>
+</span><span class='line'>    <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Site updated at </span><span class="si">#{</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">utc</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">## Committing: </span><span class="si">#{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="nb">system</span> <span class="s2">&quot;git commit -m </span><span class="se">\&quot;</span><span class="si">#{</span><span class="n">message</span><span class="si">}</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">## Pushing generated </span><span class="si">#{</span><span class="n">deploy_dir</span><span class="si">}</span><span class="s2"> website&quot;</span>
+</span><span class='line'>    <span class="no">Bundler</span><span class="o">.</span><span class="n">with_clean_env</span> <span class="p">{</span> <span class="nb">system</span> <span class="s2">&quot;git push origin </span><span class="si">#{</span><span class="n">deploy_branch</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">## Github Pages deploy complete&quot;</span>
+</span><span class='line'>    <span class="no">Bundler</span><span class="o">.</span><span class="n">with_clean_env</span> <span class="p">{</span> <span class="nb">system</span> <span class="s2">&quot;git push coding master:coding-pages&quot;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">## coding.net Pages deploy complete&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以后运行<code>rake deploy</code>时，就会自动同步到coding里去了。</p>
+
+<p>最后再说说百度抓取的事，本来到这里就应该结束了，但是百度好死不死的反应慢，就跟大家说说吧。在<a href="http://zhanzhang.baidu.com/crawltools/">站长工具</a>的抓取诊断测试一下，是否可以抓取成功，如果没有成功的话查看抓取状态下的抓取失败，如果网站IP和没有修改之前的一样，点击后面的报错，隔上大概半个小时再来试下，如果还是这样的话，在右下角的反馈中心反应一下，我是反应了才通过的。。。</p>
+
+<p>百度链接提交的自动方式有三个：主动推送、自动推送、sitemap。
+主动推送：我没怎么用，在工程底下建一个txt，将已有想提交的网页地址逐行写入，然后curl一下就好了，但是有条数限制，我是懒得搞这个了，想起来提一下，主要靠自动推送和sitemap。
+自动推送：将百度提供的工具代码，放到一个合适的位置就好，然后每次打开网页的时候都会使用百度的push.js。我是放到了octopress/source/<em>includes/custom/footer.html里，大家可以参考。
+sitemap：由于octopress已经require了 jekyll-sitemap，我们只需要保证</em>config.yml里的url是我们上面解析的二级域名就好，每次generate的时候会自动生成，提交之后在根目录就有一个sitemap.xml,将这个文件的地址提交给百度就好了，百度会不定时的去更新这个文件。</p>
+
+<p>ok，大功告成</p>
 </div>
 
 </article>
@@ -143,7 +246,7 @@
 			</div>
 			<footer id="footer" class="inner"><p>
   Copyright &copy; 2017 - bibitiger
-  <a href="http://blog.bibitiger.cn">(bibitiger的主页1)
+  <a href="http://blog.bibitiger.cn">(bibitiger的主页)
   </a>
   <script>
 	(function(){
