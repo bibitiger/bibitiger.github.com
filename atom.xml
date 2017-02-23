@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[bibitiger的博客]]></title>
-  <link href="http://bibitiger.github.io/atom.xml" rel="self"/>
-  <link href="http://bibitiger.github.io/"/>
-  <updated>2017-02-22T23:03:50+08:00</updated>
-  <id>http://bibitiger.github.io/</id>
+  <link href="http://blog.bibitiger.cn/atom.xml" rel="self"/>
+  <link href="http://blog.bibitiger.cn/"/>
+  <updated>2017-02-23T12:02:41+08:00</updated>
+  <id>http://blog.bibitiger.cn/</id>
   <author>
     <name><![CDATA[bibitiger]]></name>
     
@@ -14,10 +14,25 @@
 
   
   <entry>
+    <title type="html"><![CDATA[解决github-pages无法被百度抓取问题（octopress）]]></title>
+    <link href="http://blog.bibitiger.cn/blog/2017/02/23/duel-github-cant-for-baiduspiders/"/>
+    <updated>2017-02-23T11:47:23+08:00</updated>
+    <id>http://blog.bibitiger.cn/blog/2017/02/23/duel-github-cant-for-baiduspiders</id>
+    <content type="html"><![CDATA[<p><br></p>
+
+<hr />
+
+<p></br></p>
+
+<p>网上已经有很多关于这个问题的解决方案</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[随笔“南行“]]></title>
-    <link href="http://bibitiger.github.io/blog/2017/02/21/to-south/"/>
+    <link href="http://blog.bibitiger.cn/blog/2017/02/21/to-south/"/>
     <updated>2017-02-21T15:19:29+08:00</updated>
-    <id>http://bibitiger.github.io/blog/2017/02/21/to-south</id>
+    <id>http://blog.bibitiger.cn/blog/2017/02/21/to-south</id>
     <content type="html"><![CDATA[<h2>原文地址：<a href="http://blog.bibitiger.cn/blog/2017/02/21/to-south/">blog.bibitiger.cn/blog/2017/02/21/to-south/</a></h2>
 
 <p></br></p>
@@ -41,9 +56,9 @@
   
   <entry>
     <title type="html"><![CDATA[将已有octopress从github搬移到本地]]></title>
-    <link href="http://bibitiger.github.io/blog/2017/02/21/pull-octopress-from-github/"/>
+    <link href="http://blog.bibitiger.cn/blog/2017/02/21/pull-octopress-from-github/"/>
     <updated>2017-02-21T14:22:35+08:00</updated>
-    <id>http://bibitiger.github.io/blog/2017/02/21/pull-octopress-from-github</id>
+    <id>http://blog.bibitiger.cn/blog/2017/02/21/pull-octopress-from-github</id>
     <content type="html"><![CDATA[<h2>原文地址：<a href="http://blog.bibitiger.cn/blog/2017/02/21/pull-octopress-from-github/">blog.bibitiger.cn/blog/2017/02/21/pull-octopress-from-github/</a></h2>
 
 <p></br></p>
@@ -114,9 +129,9 @@
   
   <entry>
     <title type="html"><![CDATA[用Batch和adb做App控制器]]></title>
-    <link href="http://bibitiger.github.io/blog/2016/05/18/batchforadb/"/>
+    <link href="http://blog.bibitiger.cn/blog/2016/05/18/batchforadb/"/>
     <updated>2016-05-18T21:41:21+08:00</updated>
-    <id>http://bibitiger.github.io/blog/2016/05/18/batchforadb</id>
+    <id>http://blog.bibitiger.cn/blog/2016/05/18/batchforadb</id>
     <content type="html"><![CDATA[<h2>原文地址：<a href="http://blog.bibitiger.cn/blog/2016/05/18/batchforadb/">blog.bibitiger.cn/blog/2016/05/18/batchforadb/</a></h2>
 
 <p></br></p>
@@ -353,9 +368,9 @@
   
   <entry>
     <title type="html"><![CDATA[github Pages上部署octopress个人博客]]></title>
-    <link href="http://bibitiger.github.io/blog/2016/05/13/makeupoctopress/"/>
+    <link href="http://blog.bibitiger.cn/blog/2016/05/13/makeupoctopress/"/>
     <updated>2016-05-13T17:03:53+08:00</updated>
-    <id>http://bibitiger.github.io/blog/2016/05/13/makeupoctopress</id>
+    <id>http://blog.bibitiger.cn/blog/2016/05/13/makeupoctopress</id>
     <content type="html"><![CDATA[<h2>原文地址：<a href="http://blog.bibitiger.cn/blog/2016/05/13/makeupoctopress/">blog.bibitiger.cn/blog/2016/05/13/makeupoctopress/</a></h2>
 
 <p><br/></p>

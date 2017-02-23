@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Android | bibitiger的博客]]></title>
-  <link href="http://bibitiger.github.io/blog/categories/android/atom.xml" rel="self"/>
-  <link href="http://bibitiger.github.io/"/>
-  <updated>2017-02-22T23:03:50+08:00</updated>
-  <id>http://bibitiger.github.io/</id>
+  <link href="http://blog.bibitiger.cn/blog/categories/android/atom.xml" rel="self"/>
+  <link href="http://blog.bibitiger.cn/"/>
+  <updated>2017-02-23T12:02:41+08:00</updated>
+  <id>http://blog.bibitiger.cn/</id>
   <author>
     <name><![CDATA[bibitiger]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[用Batch和adb做App控制器]]></title>
-    <link href="http://bibitiger.github.io/blog/2016/05/18/batchforadb/"/>
+    <link href="http://blog.bibitiger.cn/blog/2016/05/18/batchforadb/"/>
     <updated>2016-05-18T21:41:21+08:00</updated>
-    <id>http://bibitiger.github.io/blog/2016/05/18/batchforadb</id>
+    <id>http://blog.bibitiger.cn/blog/2016/05/18/batchforadb</id>
     <content type="html"><![CDATA[<h2>原文地址：<a href="http://blog.bibitiger.cn/blog/2016/05/18/batchforadb/">blog.bibitiger.cn/blog/2016/05/18/batchforadb/</a></h2>
 
 <p></br></p>
