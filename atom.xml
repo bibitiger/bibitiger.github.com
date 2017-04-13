@@ -4,7 +4,7 @@
   <title><![CDATA[bibitiger的博客]]></title>
   <link href="http://blog.bibitiger.cn/atom.xml" rel="self"/>
   <link href="http://blog.bibitiger.cn/"/>
-  <updated>2017-02-24T15:27:22+08:00</updated>
+  <updated>2017-04-13T17:12:45+08:00</updated>
   <id>http://blog.bibitiger.cn/</id>
   <author>
     <name><![CDATA[bibitiger]]></name>
@@ -12,6 +12,55 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[在mac上安装php7.1]]></title>
+    <link href="http://blog.bibitiger.cn/blog/2017/04/11/install-php71-mac/"/>
+    <updated>2017-04-11T17:10:47+08:00</updated>
+    <id>http://blog.bibitiger.cn/blog/2017/04/11/install-php71-mac</id>
+    <content type="html"><![CDATA[<h2>原文地址：<a href="http://blog.bibitiger.cn/blog/2017/04/11/install-php71-mac/">blog.bibitiger.cn/blog/2017/04/11/install-php71-mac/</a></h2>
+
+<p><br/></p>
+
+<hr />
+
+<p>mac上预装了PHP，但是版本是5.5.x，由于有的时候要用最新的版本，或者项目需要，我们需要不同版本的PHP经行开发。有多种办法可以搞定，比如说如果是团队开发，版本控制的话可以使用<strong><em>Vagrant</em></strong>虚拟机，这个之后再说，今天就简单的将mac上的PHP升级，以7.1版本为例，其实很简单。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>curl -s https://php-osx.liip.ch/install.sh | bash -s 7.1</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在终端里运行，时间可能会有点长，视个人网络情况而定。</p>
+
+<p>打开预处理文件<strong><em>~/.bash_profile</em></strong>,在最后加入环境变量</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>export PATH=/usr/local/php5/bin:$PATH;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>让我们的配置生效就可以了</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>source ~/.bash_profile</span></code></pre></td></tr></table></div></figure>
+
+
+<p>现在我们查看版本就能看到我们的PHP已经升级到了7.1</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$  php -v
+</span><span class='line'>PHP 7.1.1 (cli) (built: Feb 13 2017 10:05:49) ( NTS )
+</span><span class='line'>Copyright (c) 1997-2017 The PHP Group
+</span><span class='line'>Zend Engine v3.1.0, Copyright (c) 1998-2017 Zend Technologies
+</span><span class='line'>    with Zend OPcache v7.1.1, Copyright (c) 1999-2017, by Zend Technologies
+</span><span class='line'>    with Xdebug v2.5.0, Copyright (c) 2002-2016, by Derick Rethans</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[解决github-pages无法被百度抓取问题（octopress）]]></title>
