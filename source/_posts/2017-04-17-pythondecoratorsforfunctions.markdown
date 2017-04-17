@@ -1,0 +1,198 @@
+---
+layout: post
+title: "Python中的注解“@”"
+date: 2017-04-17 22:41:22 +0800
+comments: true
+categories: "Python"
+---
+
+##原文地址：[blog.bibitiger.cn/blog/2017/04/17/pythondecoratorsforfunctions/](http://blog.bibitiger.cn/blog/2017/04/17/pythondecoratorsforfunctions/)
+
+<br/>
+
+---
+
+
+Python3.0之后加入新特性Decorators，以@为标记修饰function和class。有点类似c++的宏和java的注解。Decorators用以修饰约束function和class，分为带参数和不带参数，影响原有输出，例如类静态函数我们要表达的时候需要函数前面加上修饰@staticmethod或@classmethod,为什么这样做呢？下面用简单的例子来看一下，具体内容可以查看：[官方解释](http://www.python.org/dev/peps/pep-0318/)
+
+<!--more-->
+
+###不带参数的单一使用
+
+```
+def spamrun(fn):
+    def sayspam(*args):
+        print("spam,spam,spam")
+        fn(*args)
+    return sayspam
+@spamrun
+def useful(a,b):
+    print(a*b)
+   
+if __name__ == "__main__"
+	useful(2,5)	
+```
+运行结果
+
+```
+spam,spam,spam
+10
+```
+
+函数useful本身应该只是打印`10`，可是为什么最后的结果是这样的呢，其实我们可以简单的把这个代码理解为
+
+```
+def spamrun(fn):
+    def sayspam(*args):
+        print("spam,spam,spam")
+        fn(*args)
+    return sayspam
+    
+def useful(a,b):
+    print(a*b)
+   
+if __name__ == "__main__"
+	useful = spamrun(useful)
+	useful(a,b)
+```
+
+###不带参数的多次使用
+
+```
+def spamrun(fn):
+    def sayspam(*args):
+        print("spam,spam,spam")
+        fn(*args)
+    return sayspam
+
+
+def spamrun1(fn):
+    def sayspam1(*args):
+        print("spam1,spam1,spam1")
+        fn(*args)
+    return sayspam1
+        
+@spamrun
+@spamrun1
+def useful(a,b):
+    print(a*b)
+   
+if __name__ == "__main__"
+	useful(2,5)	
+```
+运行结果
+
+```
+spam,spam,spam
+spam1,spam1,spam1
+10
+```
+
+这个代码理解为
+
+```
+if __name__ == "__main__"
+	useful = spamrun1(spamrun(useful))
+	useful(a,b)
+```
+
+###带参数的单次使用
+
+```
+def attrs(**kwds):
+    def decorate(f):
+        for k in kwds:
+            setattr(f, k, kwds[k])
+        return f
+
+    return decorate
+
+
+@attrs(versionadded="2.2",
+       author="Guido van Rossum")
+def mymethod(f):
+    print(getattr(mymethod,'versionadded',0))
+    print(getattr(mymethod,'author',0))
+    print(f)
+   
+if __name__ == "__main__"
+mymethod(2)	
+```
+运行结果
+
+```
+2.2
+Guido van Rossum
+2
+```
+
+这个代码理解为
+
+```
+if __name__ == "__main__"
+	mymethod = attrs(versionadded="2.2",
+   		author="Guido van Rossum).(mymethod)
+	mymethod(2)
+```
+
+###带参数的多次使用
+这次我们来看一个比较实际的例子，检查我们函数的输入输出是否符合我们的标准，比如我们希望的输入是（int，（int，float））输出是（int，float），这个例子在官网里有，但是在3.6版本中使用有些问题，这里进行了一些改动，如果要进一步了解可以看下functionTool。
+
+```
+def accepts(*types):
+    def check_accepts(f):
+        def new_f(*args, **kwds):
+            assert len(types) == (len(args) + len(kwds)), \
+                "args cnt %d does not match %d" % (len(args) + len(kwds), len(types))
+            for (a, t) in zip(args, types):
+                assert isinstance(a, t), \
+                    "arg %r does not match %s" % (a, t)
+            return f(*args, **kwds)
+
+        update_wrapper(new_f, f)
+        return new_f
+
+    return check_accepts
+
+
+def returns(rtype):
+    def check_returns(f):
+        def new_f(*args, **kwds):
+            result = f(*args, **kwds)
+            assert isinstance(result, rtype), \
+                "return value %r does not match %s" % (result, rtype)
+            return result
+
+        update_wrapper(new_f, f)
+        return new_f
+
+    return check_returns
+
+
+@accepts(int, (int, float))
+@returns((int, float))
+def func(arg1, arg2):
+    return arg1 * arg2	
+    
+if __name__ == "__main__"
+	a = func(1, 'b')
+	print(a)	
+```
+这里故意输入了错误的参数，所以运行结果将我们的断言打印了出来
+
+```
+AssertionError: arg 'b' does not match (<class 'int'>, <class 'float'>)
+```
+
+这个代码理解为
+
+```
+if __name__ == "__main__"
+	func = accepts(int, (int, float)).(accepts((int, float)).(mymethod))
+	a = func(1, 'b')
+	print(a)
+```
+
+说到这里，大家不难看出其实我们可以使用Decorators做很多工作，简化代码，使逻辑更清晰等。还有更多的用法等着大家自己去挖掘了，这里只简单的介绍了针对函数的用法，其实还可以针对class使用，具体的大家自己看看官方介绍，结合这篇文档应该就不难理解了。
+
+
