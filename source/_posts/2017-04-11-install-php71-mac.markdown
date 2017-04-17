@@ -21,6 +21,8 @@ curl -s https://php-osx.liip.ch/install.sh | bash -s 7.1
 
 在终端里运行，时间可能会有点长，视个人网络情况而定。
 
+<!--more-->
+
 打开预处理文件***~/.bash_profile***,在最后加入环境变量
 
 ```
