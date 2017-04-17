@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Php | bibitiger的博客]]></title>
   <link href="http://blog.bibitiger.cn/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://blog.bibitiger.cn/"/>
-  <updated>2017-04-13T17:12:45+08:00</updated>
+  <updated>2017-04-17T22:02:48+08:00</updated>
   <id>http://blog.bibitiger.cn/</id>
   <author>
     <name><![CDATA[bibitiger]]></name>
@@ -30,6 +30,9 @@
 </code></pre>
 
 <p>在终端里运行，时间可能会有点长，视个人网络情况而定。</p>
+
+<!--more-->
+
 
 <p>打开预处理文件<strong><em>~/.bash_profile</em></strong>,在最后加入环境变量</p>
 
