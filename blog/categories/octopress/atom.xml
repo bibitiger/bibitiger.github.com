@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | bibitiger的博客]]></title>
   <link href="http://blog.bibitiger.cn/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://blog.bibitiger.cn/"/>
-  <updated>2017-05-09T21:25:00+08:00</updated>
+  <updated>2017-05-09T21:31:16+08:00</updated>
   <id>http://blog.bibitiger.cn/</id>
   <author>
     <name><![CDATA[bibitiger]]></name>
@@ -357,7 +357,7 @@ $ rake generate
 <p>设置头像，头像设置是在octopress/source/_includes/header.html里</p>
 
 <p>```html
-{% raw %}</p>
+</p>
 
 <script src="{{ root_url }}/javascripts/md5.js"></script>
 
@@ -367,7 +367,7 @@ $ rake generate
 &lt;/script&gt;
 </code></pre>
 
-<p>{% endraw %}
+<p>
 ```</p>
 
 <p>说两种方法</p>
@@ -404,12 +404,12 @@ weibo_share: true # 是否开启微博分享按钮
 <p>将<strong><em>“octopress/source/_includes/custom/navigation.html”</em></strong>里面的内容修改成你想要的，类似于这样</p>
 
 <p>```html
-{% raw %}</p>
+</p>
 
 <ul class="main-navigation">
   <li><a href="{{ root_url }}/">首页</a></li>
   <li><a href="{{ root_url }}/blog/archives">全部文章</a></li>
-{% endraw %}
+
 </ul>
 
 
@@ -417,7 +417,7 @@ weibo_share: true # 是否开启微博分享按钮
 侧边栏显示***最新文章***在***“octopress/source/_includes/asides/”***添加***“recent_post.html”***文件，在里面加入如下代码 
 </code></pre>
 
-<pre><code>{% raw %}
+<pre><code>
 &lt;section&gt;
     &lt;h2&gt;最新文章&lt;/h2&gt;
     &lt;ul id="recent_posts"&gt;
@@ -428,13 +428,13 @@ weibo_share: true # 是否开启微博分享按钮
         {% endfor %}
     &lt;/ul&gt;
 &lt;/section&gt;
-{% endraw %}
+
 </code></pre>
 
 <pre><code>
 在***octopress/source/_includes/header.html***最下方加入代码
 
-`{% raw %}{% include asides/recent_posts.html %}{% endraw %}`
+`{% include asides/recent_posts.html %}`
 
 并且把***octopress/source/_includes/custom/header.html***里面的代码都删除
 
@@ -442,7 +442,7 @@ weibo_share: true # 是否开启微博分享按钮
 
 侧边栏显示***分类***，创建***“octopress/plugins/category_list.rb”***文件，在里面加入如下代码
 
-    {% raw %}
+    
     # encoding: utf-8
     module Jekyll
 
@@ -539,22 +539,22 @@ weibo_share: true # 是否开启微博分享按钮
     end
 
     end
-    {% endraw %}
+    
 
 创建***octopress/source/_includes/asides/categories_tag.html***文件，并写入如下代码
 </code></pre>
 
-<pre><code>{% raw %}{% if site.category_tag_cloud %}
+<pre><code>{% if site.category_tag_cloud %}
 &lt;section&gt;
 &lt;h2&gt;分類&lt;/h2&gt;
 &lt;/section&gt;
-{% endif %}{% endraw %}
+{% endif %}
 </code></pre>
 
 <pre><code>
 在***_config.tml***里面加入下方代码
 
-    {% raw %}
+    
     # ----------------------- #
     #    Categories           #
     # ----------------------- #
@@ -570,12 +570,12 @@ weibo_share: true # 是否开启微博分享按钮
     # create an include categories tag cloud page in @source/_includes/asides/categories_tag.html
     # and don't forget to add 'asides/categories_tag.html' to @default_asides if you want to enable it.
     category_tag_cloud: true
-    {% endraw %}
+    
 
 在***octopress/source/_includes/header.html***最下方加入代码
 </code></pre>
 
-<pre><code>{% raw %}{% include asides/categories_tag.html %}{% endraw %}
+<pre><code>{% include asides/categories_tag.html %}
 </code></pre>
 
 <p>```</p>

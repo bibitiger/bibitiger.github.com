@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Python | bibitiger的博客]]></title>
   <link href="http://blog.bibitiger.cn/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://blog.bibitiger.cn/"/>
-  <updated>2017-05-09T21:25:00+08:00</updated>
+  <updated>2017-05-09T21:31:16+08:00</updated>
   <id>http://blog.bibitiger.cn/</id>
   <author>
     <name><![CDATA[bibitiger]]></name>
@@ -18,7 +18,9 @@
     <link href="http://blog.bibitiger.cn/blog/2017/05/09/use-thread-in-pyqt/"/>
     <updated>2017-05-09T19:36:40+08:00</updated>
     <id>http://blog.bibitiger.cn/blog/2017/05/09/use-thread-in-pyqt</id>
-    <content type="html"><![CDATA[<p>PyQt中的Thread通常使用QThread，这个个人感觉封装的很好，比如我经常喜欢这样使用C++的thread：</p>
+    <content type="html"><![CDATA[<h2>原文地址：<a href="http://blog.bibitiger.cn/blog/2017/05/09/use-thread-in-pyqt/">blog.bibitiger.cn/blog/2017/04/11/install-php71-mac/</a></h2>
+
+<p>PyQt中的Thread通常使用QThread，这个个人感觉封装的很好，比如我经常喜欢这样使用C++的thread：</p>
 
 <!--more-->
 
@@ -108,7 +110,9 @@ def returnFunc(self, result):
     <link href="http://blog.bibitiger.cn/blog/2017/05/09/make-loading-animation-by-qpainter/"/>
     <updated>2017-05-09T19:35:24+08:00</updated>
     <id>http://blog.bibitiger.cn/blog/2017/05/09/make-loading-animation-by-qpainter</id>
-    <content type="html"><![CDATA[<p>具体的代码和使用可查看<a href="https://github.com/bibitiger/testWaitProgress">github仓库</a></p>
+    <content type="html"><![CDATA[<h2>原文地址：<a href="http://blog.bibitiger.cn/blog/2017/05/09/make-loading-animation-by-qpainter/">blog.bibitiger.cn/blog/2017/04/11/install-php71-mac/</a></h2>
+
+<p>具体的代码和使用可查看<a href="https://github.com/bibitiger/testWaitProgress">github仓库</a></p>
 
 <p>实现旋转动画还可以使用QGraphicsItemAnimation来实现，这个以后再说，今天说说用QPainter实现这个效果。</p>
 
