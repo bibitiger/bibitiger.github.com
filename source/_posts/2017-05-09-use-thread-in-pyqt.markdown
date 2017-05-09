@@ -6,6 +6,8 @@ comments: true
 categories: "Python"
 ---
 
+##原文地址：[blog.bibitiger.cn/blog/2017/04/11/install-php71-mac/](http://blog.bibitiger.cn/blog/2017/05/09/use-thread-in-pyqt/)
+
 PyQt中的Thread通常使用QThread，这个个人感觉封装的很好，比如我经常喜欢这样使用C++的thread：
 
 <!--more-->
