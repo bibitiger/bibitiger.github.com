@@ -1,0 +1,584 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>使用QPainter创建等待动画在PyQt中 - bibitiger的博客</title>
+	<meta name="author" content="bibitiger">
+
+	
+	<meta name="description" content="使用QPainter创建等待动画在PyQt中 具体的代码和使用可查看github仓库 实现旋转动画还可以使用QGraphicsItemAnimation来实现，这个以后再说，今天说说用QPainter实现这个效果。 先看下效果 首先解决动画的问题，QPainter是Qt的绘画板， &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="bibitiger的博客" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://blog.bibitiger.cn/blog/2017/05/09/make-loading-animation-by-qpainter/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//libs.baidu.com/jquery/1.7.2/jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">	
+	<!--script src="/javascripts/md5.js"></script>
+	<script type="text/javascript">
+		document.write("<img alt='Profile Picture' src='http://7xtz1f.com2.z0.glb.clouddn.com/image/octo/github/bibitigertiger.jpg-shuiyin.touxiang' style='width:160px;'/>");
+	</script-->
+	<img alt="Profile Picture" src="http://7xtz1f.com2.z0.glb.clouddn.com/image/octo/github/bibitigertiger.jpg-shuiyin" style="width:160px;"/>
+	<!--img alt="Profile Picture" src="/images/tiger.jpg" style="width:160px;"/-->
+</div>
+<h1><a href="/">bibitiger的博客</a></h1>
+<p class="subtitle">把酒言欢.</p>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">全部文章</a></li>
+</ul>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		<a class="weibo" href="http://www.weibo.com/baronny" title="Weibo">Weibo</a>
+		
+		
+		<a class="jianshu" href="http://www.jianshu.com/users/f4d8eff68965/latest_articles" title="Jianshu">Jianshu</a>
+		
+		
+		
+		
+		
+		
+		<a class="dribbble" href="http://www.dribbble.com/baronny" title="Dribbble">Dribbble</a>
+		
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+<hgroup>
+</hgroup>
+
+<section>
+  <h2>最新文章</h2>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/05/09/scanning-qrcode-barcode-image-oc/">Objective-c扫描二维码和条形码</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/05/09/use-thread-in-pyqt/">PyQt中Thread的使用</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+<section>
+<h2>分類</h2>
+<span class='categories_tag'> <a href='/blog/categories/android' style='font-size: 100%'>Android(1)</a>  <a href='/blog/categories/objective-c' style='font-size: 100%'>Objective-c(1)</a>  <a href='/blog/categories/octopress' style='font-size: 100%'>Octopress(3)</a>  <a href='/blog/categories/php' style='font-size: 100%'>Php(1)</a>  <a href='/blog/categories/python' style='font-size: 100%'>Python(3)</a>  <a href='/blog/categories/sheng-huo-sui-bi' style='font-size: 100%'>生活随笔(1)</a> </span>
+</section>
+
+
+
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">使用QPainter创建等待动画在PyQt中</h1>
+	<div class="entry-content" itemprop="articleBody"><p>具体的代码和使用可查看<a href="https://github.com/bibitiger/testWaitProgress">github仓库</a></p>
+
+<p>实现旋转动画还可以使用QGraphicsItemAnimation来实现，这个以后再说，今天说说用QPainter实现这个效果。</p>
+
+<!--more-->
+
+
+<h3>先看下效果</h3>
+
+<p><img src="http://7xtz1f.com2.z0.glb.clouddn.com/image/qtProgress/ProgressGradient.gif-shuiyinBlack" alt="gradient" /></p>
+
+<p>首先解决动画的问题，QPainter是Qt的绘画板，经常和PainterEvent混合使用，在页面重新渲染或者调用update等的情况下都会触发PainterEvent。在这个前提下，先创建一个我们自己的QWidget，这里需要注意的是必须给我们的QWidget设定最小size，否则在layout布局的时候会显示不出来。重写QWidget的<strong>init</strong>,我是这样做的：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>def __init__(self, width, height, parent = None):
+</span><span class='line'>    super(MyRotateProgress, self).__init__(parent)
+</span><span class='line'>    self.setMinimumSize(width, height)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这一步作为我们先画出一个十个指针的圆形环绕图，这里我们重写paintEvent：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>def paintEvent(self, QPaintEvent):
+</span><span class='line'>    super(MyRotateProgress, self).paintEvent(QPaintEvent)
+</span><span class='line'>    painter = QPainter(self)
+</span><span class='line'>    # 反走样，边缘平滑
+</span><span class='line'>    painter.setRenderHint(QPainter.Antialiasing, True)
+</span><span class='line'>    #radius取最小边长
+</span><span class='line'>    radius = self.width() if self.width() &lt; self.height() else self.height()
+</span><span class='line'>    if radius &lt;= 0:
+</span><span class='line'>        return
+</span><span class='line'>    radius = radius/6
+</span><span class='line'>    # 将圆等分为10份，分别画出10条线
+</span><span class='line'>    per = 360/10;
+</span><span class='line'>    # 将画板的焦点坐标放置到中心，这样我们的旋转将围绕中心来进行
+</span><span class='line'>    painter.translate(self.width()/2, self.height()/2)
+</span><span class='line'>    #将一个一个的直线画出
+</span><span class='line'>    for i in range(10):
+</span><span class='line'>        #记住当前画板状态
+</span><span class='line'>        painter.save()
+</span><span class='line'>        #设置画笔，Qpen(黑色，宽度三像素)
+</span><span class='line'>        painter.setPen(QPen(Qt.black, 3))
+</span><span class='line'>        #旋转
+</span><span class='line'>        painter.rotate(per*i)
+</span><span class='line'>        #划线
+</span><span class='line'>        painter.drawLine(QPoint(0, 0 + radius), QPoint(0, 0 + radius*2))
+</span><span class='line'>        #由于我们将画板旋转了角度，所以还原画板到上一次记忆的状态
+</span><span class='line'>        painter.restore()</span></code></pre></td></tr></table></div></figure>
+
+
+<p>好，现在我们已经画出了一个雏形了，接下来让他动起来就可以出效果了。那接着使用QTimer来计时，并且如前文所说在update的时候会触发paintEvent这个事件。那如下，就可以实现旋转了：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from PyQt5.Qt import *
+</span><span class='line'>
+</span><span class='line'>class MyRotateProgress(QWidget):
+</span><span class='line'>    PenStyleNormal = 0
+</span><span class='line'>    PenStyleGradient = 1
+</span><span class='line'>    PenstylePerGradient = 2
+</span><span class='line'>
+</span><span class='line'>    def __init__(self, width, height, parent = None):
+</span><span class='line'>        super(MyRotateProgress, self).__init__(parent)
+</span><span class='line'>        self.setMinimumSize(width, height)
+</span><span class='line'>        self.now = 0;
+</span><span class='line'>        self._timer = QTimer(self)
+</span><span class='line'>        self._timer.timeout.connect(self.onTime)
+</span><span class='line'>        self._timer.start(150)
+</span><span class='line'>        self._PenStyle = MyRotateProgress.PenStyleNormal
+</span><span class='line'>
+</span><span class='line'>    def onTime(self):
+</span><span class='line'>        self.now += 1
+</span><span class='line'>        self.now = 0 if self.now &gt;= 10 else self.now
+</span><span class='line'>        self.update()
+</span><span class='line'>
+</span><span class='line'>    def paintEvent(self, QPaintEvent):
+</span><span class='line'>        super(MyRotateProgress, self).paintEvent(QPaintEvent)
+</span><span class='line'>        painter = QPainter(self)
+</span><span class='line'>        # 反走样，边缘平滑
+</span><span class='line'>        painter.setRenderHint(QPainter.Antialiasing, True)
+</span><span class='line'>        #radius取最小边长
+</span><span class='line'>        radius = self.width() if self.width() &lt; self.height() else self.height()
+</span><span class='line'>        if radius &lt;= 0:
+</span><span class='line'>            return
+</span><span class='line'>        radius = radius/6
+</span><span class='line'>        # 将圆等分为10份，分别画出10条线
+</span><span class='line'>        per = 360/10;
+</span><span class='line'>        # painter.setPen(QPen(Qt.white, 3))
+</span><span class='line'>        painter.translate(self.width()/2, self.height()/2)
+</span><span class='line'>        # painter.rotate(per)
+</span><span class='line'>        # painter.drawLine(QPoint(0, 0 + radius), QPoint(0, 0 + radius*2))
+</span><span class='line'>        print('get pen begin')
+</span><span class='line'>        for i in range(10):
+</span><span class='line'>            painter.save()
+</span><span class='line'>            # self.getPenStyle(self._PenStyle, i)
+</span><span class='line'>            painter.setPen(self.getPenStyle(self._PenStyle, i))
+</span><span class='line'>            # painter.translate(self.width()/2, self.height()/2)
+</span><span class='line'>            painter.rotate(per*i)
+</span><span class='line'>            painter.drawLine(QPoint(0, 0 + radius), QPoint(0, 0 + radius*2))
+</span><span class='line'>            painter.restore()
+</span><span class='line'>
+</span><span class='line'>    def getPenStyle(self, PenStyle, PenPoint):
+</span><span class='line'>        radius = self.width() if self.width() &lt; self.height() else self.height()
+</span><span class='line'>        if radius &lt;= 0:
+</span><span class='line'>            return
+</span><span class='line'>        radius = radius / 6
+</span><span class='line'>
+</span><span class='line'>        if PenStyle == MyRotateProgress.PenStyleNormal:
+</span><span class='line'>            if PenPoint == self.now:
+</span><span class='line'>                return QPen(Qt.white, 3)
+</span><span class='line'>            else:
+</span><span class='line'>                return QPen(Qt.black, 3)
+</span><span class='line'>        elif PenStyle == MyRotateProgress.PenStyleGradient:
+</span><span class='line'>            point = PenPoint-self.now if PenPoint-self.now &gt;= 0 else 10+PenPoint-self.now
+</span><span class='line'>            print('{}:{}'.format('self.now',self.now))
+</span><span class='line'>            print('{}:{}'.format('PenPoint', PenPoint))
+</span><span class='line'>            print(point)
+</span><span class='line'>            return QPen(QColor(255*point/10, 255*point/10,255*point/10), 3)
+</span><span class='line'>        elif PenStyle == MyRotateProgress.PenstylePerGradient:
+</span><span class='line'>            if PenPoint == self.now:
+</span><span class='line'>                gradient = QRadialGradient(0,radius, radius, 0, radius)
+</span><span class='line'>                gradient.setColorAt(0.2,Qt.white)
+</span><span class='line'>                gradient.setColorAt(0.6,Qt.gray)
+</span><span class='line'>                return QPen(gradient, 3)
+</span><span class='line'>            else:
+</span><span class='line'>                gradient = QRadialGradient(0,radius, radius, 0, radius)
+</span><span class='line'>                gradient.setColorAt(0.2,Qt.gray)
+</span><span class='line'>                gradient.setColorAt(0.6,Qt.black)
+</span><span class='line'>                return QPen(gradient, 3)
+</span><span class='line'>
+</span><span class='line'>    def closeEvent(self, QCloseEvent):
+</span><span class='line'>        print('timer close')
+</span><span class='line'>        if self._timer.isActive():
+</span><span class='line'>            self._timer.stop()
+</span><span class='line'>
+</span><span class='line'>    def hideEvent(self, QHideEvent):
+</span><span class='line'>        print('timer hide')
+</span><span class='line'>        if self._timer.isActive():
+</span><span class='line'>            self._timer.stop()
+</span><span class='line'>
+</span><span class='line'>    def showEvent(self, QShowEvent):
+</span><span class='line'>        print('timer show')
+</span><span class='line'>        if self._timer.isActive() != True:
+</span><span class='line'>            self._timer.start()
+</span><span class='line'>
+</span><span class='line'>    @property
+</span><span class='line'>    def PenStyle(self):
+</span><span class='line'>        return self._PenStyle
+</span><span class='line'>
+</span><span class='line'>    @PenStyle.setter
+</span><span class='line'>    def PenStyle(self, Value):
+</span><span class='line'>        self._PenStyle = Value
+</span><span class='line'>        self.update()</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当然我们用的使用不能就这样用，既然我们是等待和loading的动画，那模板和提示字是不可避免的，这时候我们就需要用到QDialog了，我们需要重写QDialog，并且把他的尺寸设定为目标窗口的大小，并且进行排版，废话不多说，直接上代码：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from PyQt5.Qt import *
+</span><span class='line'>import  MyRotateProgress
+</span><span class='line'>
+</span><span class='line'>class MyWaitProgressDialog(QDialog):
+</span><span class='line'>    '''MyWaitProgressDialog(string,QWidget)'''
+</span><span class='line'>
+</span><span class='line'>    def __init__(self, value, targetWindow):
+</span><span class='line'>        super(MyWaitProgressDialog, self).__init__()
+</span><span class='line'>        self.decTile = QLabel()
+</span><span class='line'>        #设置为居中
+</span><span class='line'>        self.decTile.setAlignment(Qt.AlignHCenter)
+</span><span class='line'>        self.Dec = value
+</span><span class='line'>        self._targetWindow = targetWindow
+</span><span class='line'>        self._rotate = MyRotateProgress.MyRotateProgress(80,80)
+</span><span class='line'>        self._rotate.PenStyle = MyRotateProgress.MyRotateProgress.PenStyleGradient
+</span><span class='line'>        # self._rotate.setParent(self)
+</span><span class='line'>        # palette = QPalette(Qt.gray)
+</span><span class='line'>        self._rotate.setAutoFillBackground(True)
+</span><span class='line'>        # self._rotate.setPalette(palette)
+</span><span class='line'>        vbox = QVBoxLayout()
+</span><span class='line'>        #设置为居中
+</span><span class='line'>        vbox.setAlignment(Qt.AlignHCenter)
+</span><span class='line'>        vbox.addStretch(1)
+</span><span class='line'>        vbox.addWidget(self._rotate)
+</span><span class='line'>        vbox.addWidget(self.decTile)
+</span><span class='line'>        vbox.addStretch(1)
+</span><span class='line'>        hbox = QHBoxLayout()
+</span><span class='line'>        hbox.addStretch(1)
+</span><span class='line'>        hbox.addLayout(vbox)
+</span><span class='line'>        hbox.addStretch(1)
+</span><span class='line'>
+</span><span class='line'>        # self.webview.resizeEvent().connect
+</span><span class='line'>        self._oldTargetFlags = self._targetWindow.windowFlags()
+</span><span class='line'>        # self._targetWindow.setWindowFlags( self._oldTargetFlags & Qt.FramelessWindowHint)
+</span><span class='line'>
+</span><span class='line'>        self.setLayout(hbox)
+</span><span class='line'>        #去掉标题栏
+</span><span class='line'>        self.setWindowFlags(Qt.Dialog | Qt.FramelessWindowHint)
+</span><span class='line'>        self.setGeometry(targetWindow.geometry())
+</span><span class='line'>        self.setWindowOpacity(0.8)
+</span><span class='line'>
+</span><span class='line'>    @property
+</span><span class='line'>    def Dec(self):
+</span><span class='line'>        return self._dec
+</span><span class='line'>
+</span><span class='line'>    @Dec.setter
+</span><span class='line'>    def Dec(self, value):
+</span><span class='line'>        assert isinstance(value, str), "webUrl value %r not match %s" (value, QUrl)
+</span><span class='line'>        self._dec = value
+</span><span class='line'>        self.decTile.setText(value)
+</span><span class='line'>
+</span><span class='line'>    def closeEvent(self, QCloseEvent):
+</span><span class='line'>        print("closeEvernt")
+</span><span class='line'>        self._targetWindow.setWindowFlags(self._oldTargetFlags)
+</span><span class='line'>
+</span><span class='line'>    def paintEvent(self, QPaintEvent):
+</span><span class='line'>        print('paint Event')</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后我们使用的时候用exec就是模态的了：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>self.progress = MyWaitProgressDialog('begin...',self)
+</span><span class='line'>        self.progress.exec()</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style addthis_16x16_style">
+	
+	<a class="addthis_button_sinaweibo"></a>
+	
+	
+	
+	
+	
+	<a class="addthis_button_compact"></a>
+	<a class="addthis_counter addthis_bubble_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+</div>
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2099860"></script>
+<!-- UY END -->
+
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2017 - bibitiger
+  <a href="http://blog.bibitiger.cn">(bibitiger的主页)
+  </a>
+  <script>
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+</script>
+<script>
+(function(){
+   var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?7f9c7a6f83d76c6421c5ed175eca4bee":"https://jspassport.ssl.qhimg.com/11.0.1.js?7f9c7a6f83d76c6421c5ed175eca4bee";
+   document.write('<script src="' + src + '" id="sozz"><\/script>');
+})();
+</script>
+</p>
+</footer>
+			<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

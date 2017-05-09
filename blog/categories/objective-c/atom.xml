@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Objective-c | bibitiger的博客]]></title>
+  <link href="http://blog.bibitiger.cn/blog/categories/objective-c/atom.xml" rel="self"/>
+  <link href="http://blog.bibitiger.cn/"/>
+  <updated>2017-05-09T21:25:00+08:00</updated>
+  <id>http://blog.bibitiger.cn/</id>
+  <author>
+    <name><![CDATA[bibitiger]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Objective-c扫描二维码和条形码]]></title>
+    <link href="http://blog.bibitiger.cn/blog/2017/05/09/scanning-qrcode-barcode-image-oc/"/>
+    <updated>2017-05-09T19:39:54+08:00</updated>
+    <id>http://blog.bibitiger.cn/blog/2017/05/09/scanning-qrcode-barcode-image-oc</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+</feed>
