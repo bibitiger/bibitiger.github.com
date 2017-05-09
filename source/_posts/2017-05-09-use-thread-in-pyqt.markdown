@@ -8,6 +8,10 @@ categories: "Python"
 
 ##原文地址：[blog.bibitiger.cn/blog/2017/04/11/install-php71-mac/](http://blog.bibitiger.cn/blog/2017/05/09/use-thread-in-pyqt/)
 
+<br/>
+
+---
+
 PyQt中的Thread通常使用QThread，这个个人感觉封装的很好，比如我经常喜欢这样使用C++的thread：
 
 <!--more-->
@@ -93,4 +97,4 @@ def returnFunc(self, result):
 	print(result)
 ```
 
-如果在我们的func上加上输入输出的校验感觉就更完美了，这个在[Python中的注解“@”](blog.bibitiger.cn/blog/2017/04/17/pythondecoratorsforfunctions/)里已经说过了
+如果在我们的func上加上输入输出的校验感觉就更完美了，这个在[Python中的注解“@”](http://blog.bibitiger.cn/blog/2017/04/17/pythondecoratorsforfunctions/)里已经说过了

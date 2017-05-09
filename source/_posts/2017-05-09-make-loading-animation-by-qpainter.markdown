@@ -9,6 +9,10 @@ categories: "Python"
 
 ##原文地址：[blog.bibitiger.cn/blog/2017/04/11/install-php71-mac/](http://blog.bibitiger.cn/blog/2017/05/09/make-loading-animation-by-qpainter/)
 
+<br/>
+
+---
+
 具体的代码和使用可查看[github仓库](https://github.com/bibitiger/testWaitProgress)
 
 实现旋转动画还可以使用QGraphicsItemAnimation来实现，这个以后再说，今天说说用QPainter实现这个效果。
