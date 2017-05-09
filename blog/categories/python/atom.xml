@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Python | bibitiger的博客]]></title>
   <link href="http://blog.bibitiger.cn/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://blog.bibitiger.cn/"/>
-  <updated>2017-05-09T21:33:31+08:00</updated>
+  <updated>2017-05-09T21:38:47+08:00</updated>
   <id>http://blog.bibitiger.cn/</id>
   <author>
     <name><![CDATA[bibitiger]]></name>
@@ -105,7 +105,7 @@ def returnFunc(self, result):
     print(result)
 </code></pre>
 
-<p>如果在我们的func上加上输入输出的校验感觉就更完美了，这个在<a href="blog.bibitiger.cn/blog/2017/04/17/pythondecoratorsforfunctions/">Python中的注解“@”</a>里已经说过了</p>
+<p>如果在我们的func上加上输入输出的校验感觉就更完美了，这个在<a href="http://blog.bibitiger.cn/blog/2017/04/17/pythondecoratorsforfunctions/">Python中的注解“@”</a>里已经说过了</p>
 ]]></content>
   </entry>
   
