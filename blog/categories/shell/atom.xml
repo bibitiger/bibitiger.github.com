@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Shell | bibitiger的博客]]></title>
   <link href="http://blog.bibitiger.cn/blog/categories/shell/atom.xml" rel="self"/>
   <link href="http://blog.bibitiger.cn/"/>
-  <updated>2017-11-07T00:51:02+08:00</updated>
+  <updated>2017-11-07T01:01:03+08:00</updated>
   <id>http://blog.bibitiger.cn/</id>
   <author>
     <name><![CDATA[bibitiger]]></name>
@@ -34,7 +34,7 @@
 
 <p> 其中 var 是变量名，# 号是运算符，*//表示从左边开始删除第一个 // 号及左边的所有字符</p>
 
-<p> 即删除 <a href="http://">http://</a></p>
+<p> 即删除 <code>http://</code></p>
 
 <p> 结果是 ：www.hao.com/123.htm</p></li>
 </ol>
@@ -50,7 +50,7 @@
 
 <p> ##*/ 表示从左边开始删除最后（最右边）一个 / 号及左边的所有字符</p>
 
-<p> 即删除<a href="http://www.hao.com/">http://www.hao.com/</a></p>
+<p> 即删除<code>http://www.hao.com/</code></p>
 
 <p> 结果是 123.htm</p></li>
 <li><p>%号截取，删除右边字符，保留左边字符</p>
@@ -59,21 +59,21 @@
 
 <p> %/* 表示从右边开始，删除第一个 / 号及右边的字符</p>
 
-<p> 结果是：<a href="http://www.hao.com">http://www.hao.com</a></p></li>
+<p> 结果是：<code>http://www.hao.com</code></p></li>
 <li><p>%% 号截取，删除右边字符，保留左边字符</p>
 
 <p> echo ${var%%/*}</p>
 
 <p> %%/* 表示从右边开始，删除最后（最左边）一个 / 号及右边的字符</p>
 
-<p> 结果是：<a href="http:">http:</a></p></li>
+<p> 结果是：<code>http:</code></p></li>
 <li><p>从左边第几个字符开始，及字符的个数</p>
 
 <p> echo ${var:0:5}</p>
 
 <p> 其中的 0 表示左边第一个字符开始，5 表示字符的总个数。</p>
 
-<p> 结果是：<a href="http:">http:</a></p></li>
+<p> 结果是：<code>http:</code></p></li>
 <li><p>从左边第几个字符开始，一直到结束。</p>
 
 <p> echo ${var:7}</p>
