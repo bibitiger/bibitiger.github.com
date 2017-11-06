@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://blog.bibitiger.cn/blog/2017/11/06/use-sed-on-mac/</loc>
+<lastmod>2017-11-06T23:15:49+08:00</lastmod>
+</url>
+<url>
 <loc>http://blog.bibitiger.cn/blog/2017/05/09/scanning-qrcode-barcode-image-oc/</loc>
 <lastmod>2017-05-09T19:39:54+08:00</lastmod>
 </url>
@@ -66,5 +70,11 @@
 </url>
 <url>
 <loc>http://blog.bibitiger.cn/blog/categories/objective-c/</loc>
+</url>
+<url>
+<loc>http://blog.bibitiger.cn/blog/categories/shell/</loc>
+</url>
+<url>
+<loc>http://blog.bibitiger.cn/posts/2/</loc>
 </url>
 </urlset>

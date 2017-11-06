@@ -4,7 +4,7 @@
   <title><![CDATA[bibitiger的博客]]></title>
   <link href="http://blog.bibitiger.cn/atom.xml" rel="self"/>
   <link href="http://blog.bibitiger.cn/"/>
-  <updated>2017-05-09T21:38:47+08:00</updated>
+  <updated>2017-11-07T00:31:58+08:00</updated>
   <id>http://blog.bibitiger.cn/</id>
   <author>
     <name><![CDATA[bibitiger]]></name>
@@ -12,6 +12,86 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[sed在mac上的一些问题]]></title>
+    <link href="http://blog.bibitiger.cn/blog/2017/11/06/use-sed-on-mac/"/>
+    <updated>2017-11-06T23:15:49+08:00</updated>
+    <id>http://blog.bibitiger.cn/blog/2017/11/06/use-sed-on-mac</id>
+    <content type="html"><![CDATA[<h2>原文地址：<a href="http://blog.bibitiger.cn/blog/2017/11/06/use-sed-on-mac/">blog.bibitiger.cn/blog/2017/11/06/use-sed-on-mac/</a></h2>
+
+<p><br/></p>
+
+<hr />
+
+<p>今天要做一个文本拼接的活，本来很简单的事情，使用 sed /a /s轻轻松松就能搞定的事，结果因为mac的原因搞得简直痛不欲生。</p>
+
+<p>让我们看下面一段代码</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$: touch test.json
+</span><span class='line'>$: echo "[{"test":["abc","edf"]}" &gt;&gt; test.json
+</span><span class='line'>$: sed -i '/test/a ,{"test1":["qwe"]}]' test.json
+</span><span class='line'>$: sed -i 's/qwe/uio/g' test.json</span></code></pre></td></tr></table></div></figure>
+
+
+<p>本来我们应该得出的结果是什么呢？</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$: cat test.json
+</span><span class='line'>  [{test:[abc,edf]}
+</span><span class='line'>  ,{"test1":["uio"]}]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>可是就是这么简单的语句，竟然出了问题，什么鬼呢？
+<code>sed: 1: "/a ,{"test1":["qwe"]}]": command a expects \ followed by text</code></p>
+
+<!--more-->
+
+
+<p>翻看man下的帮助文档，也是再没见过这样的了，说的不清不楚，也没有e.g.，看着网上的解释之类的，尝试了-i后面加“”的，也是不行，接着尝试加换行"\n"，还是不行，各种折腾。硬着头皮又读了一遍帮助，再次摸索，正解应该是：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> $: sed -i "" "/test/a\\
+</span><span class='line'>  ,{\"test1\":[\"qwe\"]}]" test.json</span></code></pre></td></tr></table></div></figure>
+
+
+<p>必须要在/a后面加上\然后换行，而且必须是双引号，这样子我们这句话就加入进去了。</p>
+
+<p>对了，-i后面的 &ldquo;&rdquo; 这个也是必须的。。。。 如果不写入内容，就直接修改当前文件，如果写入了的话就会生成缓存文件，比如写入"_bat"，原文件内容导入test.json_bat中，这个文件自动生成。</p>
+
+<p>大家用了之后会发现这样也有一个问题，我们插入的内容没有自带换行，这个时候我们应该这样写以确保换行：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$: sed -i "" "/test/a\\
+</span><span class='line'>  ,{\"test1\":[\"qwe\"]}] \\
+</span><span class='line'>  " test.json</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对的，还是双斜杠！！！</p>
+
+<p>这个写法实在是有些别扭，而且非常不利于编写，并且还和其他的unix系列系统不一致，所以解决这个问题的终极解决办法是：</p>
+
+<h3>切换成<u><strong><em>gnu_sed</em></strong></u></h3>
+
+<p>1.brew install gnu-sed &ndash;with-default-names</p>
+
+<p>2.vi ~/.zshrc
+export PATH=&ldquo;/usr/local/opt/gnu-sed/libexec/gnubin:$PATH&rdquo;</p>
+
+<p>3.source ~/.zshrc 或者新开窗口，让设置生效</p>
+
+<p>现在我们再使用sed是不是顺手多了，又回到了我们所熟知的领域，尽情玩耍吧</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Objective-c扫描二维码和条形码]]></title>
