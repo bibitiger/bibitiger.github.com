@@ -3,12 +3,12 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>bibitiger的博客</title>
+	<title>字符串在shell中截取 - bibitiger的博客</title>
 	<meta name="author" content="bibitiger">
 
 	
-	<meta name="description" content="
-">
+	<meta name="description" content="字符串在shell中截取 原文地址：blog.bibitiger.cn/blog/2017/11/07/shell-string-cut/ Linux 的字符串截取很有用。有八种方法。
+假设有变量 var=http://www.hao.com/123.htm #号截取，删除左边字符，保留右边字符 &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
 
 	<link href="/atom.xml" rel="alternate" title="bibitiger的博客" type="application/atom+xml">
 	
-	<link rel="canonical" href="http://blog.bibitiger.cn/blog/categories/">
+	<link rel="canonical" href="http://blog.bibitiger.cn/blog/2017/11/07/shell-string-cut/">
 	<link href="/favicon.png" rel="shortcut icon">
 	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
 	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
@@ -106,7 +106,114 @@
 				
 			
 			<div class="mid-col-container">
-				<div id="content" class="inner">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">字符串在shell中截取</h1>
+	<div class="entry-content" itemprop="articleBody"><h2>原文地址：<a href="http://blog.bibitiger.cn/blog/2017/11/07/shell-string-cut/">blog.bibitiger.cn/blog/2017/11/07/shell-string-cut/</a></h2>
+
+<p><br/></p>
+
+<hr />
+
+<p>Linux 的字符串截取很有用。有八种方法。
+假设有变量 <code>var=http://www.hao.com/123.htm</code></p>
+
+<ol>
+<li><p>#号截取，删除左边字符，保留右边字符。</p>
+
+<p> echo ${var#*//}</p>
+
+<p> 其中 var 是变量名，# 号是运算符，*//表示从左边开始删除第一个 // 号及左边的所有字符</p>
+
+<p> 即删除 <a href="http://">http://</a></p>
+
+<p> 结果是 ：www.hao.com/123.htm</p></li>
+</ol>
+
+
+<!--more-->
+
+
+<ol>
+<li><p>## 号截取，删除左边字符，保留右边字符。</p>
+
+<p> echo ${var##*/}</p>
+
+<p> ##*/ 表示从左边开始删除最后（最右边）一个 / 号及左边的所有字符</p>
+
+<p> 即删除<a href="http://www.hao.com/">http://www.hao.com/</a></p>
+
+<p> 结果是 123.htm</p></li>
+<li><p>%号截取，删除右边字符，保留左边字符</p>
+
+<p> echo ${var%/*}</p>
+
+<p> %/* 表示从右边开始，删除第一个 / 号及右边的字符</p>
+
+<p> 结果是：<a href="http://www.hao.com">http://www.hao.com</a></p></li>
+<li><p>%% 号截取，删除右边字符，保留左边字符</p>
+
+<p> echo ${var%%/*}</p>
+
+<p> %%/* 表示从右边开始，删除最后（最左边）一个 / 号及右边的字符</p>
+
+<p> 结果是：<a href="http:">http:</a></p></li>
+<li><p>从左边第几个字符开始，及字符的个数</p>
+
+<p> echo ${var:0:5}</p>
+
+<p> 其中的 0 表示左边第一个字符开始，5 表示字符的总个数。</p>
+
+<p> 结果是：<a href="http:">http:</a></p></li>
+<li><p>从左边第几个字符开始，一直到结束。</p>
+
+<p> echo ${var:7}</p>
+
+<p> 其中的 7 表示左边第8个字符开始，一直到结束。</p>
+
+<p> 结果是 ：www.hao.com/123.htm</p></li>
+<li><p>从右边第几个字符开始，及字符的个数</p>
+
+<p> echo ${var:0-7:3}</p>
+
+<p> 其中的 0-7 表示右边算起第七个字符开始，3 表示字符的个数。</p>
+
+<p> 结果是：123</p></li>
+<li><p>从右边第几个字符开始，一直到结束。</p>
+
+<p> echo ${var:0-7}</p>
+
+<p> 表示从右边第七个字符开始，一直到结束。</p>
+
+<p> 结果是：123.htm</p></li>
+</ol>
+
+
+<p><u>**注：（左边的第一个字符是用 0 表示，右边的第一个字符用 0-1 表示）</u></p>
+</div>
+
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style addthis_16x16_style">
+	
+	<a class="addthis_button_sinaweibo"></a>
+	
+	
+	
+	
+	
+	<a class="addthis_button_compact"></a>
+	<a class="addthis_counter addthis_bubble_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+</div>
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2099860"></script>
+<!-- UY END -->
+
+
 </div>
 			</div>
 			<footer id="footer" class="inner"><p>
