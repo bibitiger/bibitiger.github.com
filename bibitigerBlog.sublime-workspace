@@ -1,0 +1,371 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"waitdoc",
+				"WaitDocOfficial"
+			],
+			[
+				"historyte",
+				"historyTestList"
+			],
+			[
+				"history",
+				"historytest"
+			],
+			[
+				"commentBy",
+				"CommentByUser"
+			],
+			[
+				"checkhist",
+				"checkHistoryClosePat"
+			],
+			[
+				"checkhis",
+				"checkHistoryCloseSys"
+			],
+			[
+				"closebyp",
+				"CloseByPatient"
+			],
+			[
+				"ReportCheck",
+				"ReportCheckHistory"
+			],
+			[
+				"CheckState",
+				"CheckStateChangeTime"
+			],
+			[
+				"for",
+				"for	for (…) {…}"
+			],
+			[
+				"findreport",
+				"findReportByReportAndDoc"
+			],
+			[
+				"de",
+				"description	@description"
+			],
+			[
+				"exit",
+				"process.exit(code);"
+			],
+			[
+				"h",
+				"logHelper"
+			],
+			[
+				"inc",
+				"inc	#include \"…\""
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "Packages/Nodejs/Nodejs.sublime-build",
+	"command_palette":
+	{
+		"height": 127.0,
+		"selected_items":
+		[
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 467.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/fanxu/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/fanxu/workInZG/sas_lean/lean-sas/node_modules/cookiejar/readme.md",
+		"/Users/fanxu/workInZG/sas_lean/lean-sas/node_modules/cookies/README.md",
+		"/Users/fanxu/Downloads/62724.txt",
+		"/Users/fanxu/workInZG/sas_lean/lean-sas/README.md",
+		"/Users/fanxu/workInZG/sas_lean/lean-sas/node_modules/avoscloud-sdk/dist/node/error.js",
+		"/Users/fanxu/Library/Application Support/Sublime Text 2/Packages/User/Base File.sublime-settings",
+		"/Users/fanxu/Library/Application Support/Sublime Text 2/Packages/DocBlockr/Base File.sublime-settings",
+		"/Users/fanxu/workInZG/M+App_Domain/Mplus/iOS_v1.5_03_07/Podfile.lock",
+		"/Volumes/DiskFan/mac/githublean/呼吸康test/node_modules/leanengine/package.json",
+		"/Users/fanxu/Desktop/hello/test.txt.dump",
+		"/Users/fanxu/Desktop/hello/test.txt",
+		"/Users/fanxu/Desktop/hello/test.bat.dump",
+		"/Users/fanxu/Desktop/hello/test.bat",
+		"/Users/fanxu/Library/Application Support/Sublime Text 2/Packages/Nodejs/Nodejs.sublime-settings",
+		"/Users/fanxu/Library/Application Support/Sublime Text 2/Packages/User/Nodejs.sublime-settings",
+		"/Users/fanxu/Library/Application Support/Sublime Text 2/Packages/User/javascript.sublime-build",
+		"/Users/fanxu/.nvm/versions/node/v5.10.1/lib/node_modules/npm/bin/npm",
+		"/Users/fanxu/Library/Application Support/Sublime Text 2/Packages/NPMInfo/NPMInfo.sublime-settings",
+		"/Users/fanxu/Library/Application Support/Sublime Text 2/Packages/User/NPMInfo.sublime-settings",
+		"/Users/fanxu/node_modules/iconv-lite/package.json",
+		"/Users/fanxu/iconv-lite/README.md",
+		"/Users/fanxu/node_modules/iconv-lite/README.md",
+		"/Users/fanxu/workInZG/log_bluetooth/bt_2.txt",
+		"/Volumes/DiskFan/mac/githubblog/bibitiger_blog/octopress/.themes/greyshade/sass/parts/_header.scss",
+		"/Volumes/DiskFan/mac/githubblog/bibitiger_blog/octopress/public/blog/2016/05/13/makeupoctopress/index.html",
+		"/Volumes/DiskFan/mac/githubblog/bibitiger_blog/octopress/_deploy/atom.xml",
+		"/Volumes/DiskFan/mac/githubblog/bibitiger_blog/octopress/.pygments-cache/html-b49471e3404c894b7915426aecec628f.html",
+		"/Volumes/DiskFan/mac/githubblog/bibitiger_blog/octopress/source/_includes/custom/navigation.html",
+		"/Volumes/DiskFan/mac/githubblog/bibitiger_blog/octopress/.themes/greyshade/source/_includes/head.html",
+		"/Volumes/DiskFan/mac/githubblog/bibitiger_blog/octopress/.themes/classic/source/_includes/google_plus_one.html",
+		"/Volumes/DiskFan/mac/githubblog/bibitiger_blog/octopress/source/_includes/header.html",
+		"/Volumes/DiskFan/mac/githubblog/bibitiger_blog/octopress/source/_includes/post/sharing.html",
+		"/Volumes/DiskFan/mac/githubblog/bibitiger_blog/octopress/.themes/greyshade/source/_includes/post/sharing.html",
+		"/Volumes/DiskFan/mac/githubblog/bibitiger_blog/octopress/source/_posts/2016-05-13-makeupoctopress.markdown",
+		"/Volumes/DiskFan/mac/githubblog/bibitiger_blog/octopress/plugins/category_list.rb",
+		"/Volumes/DiskFan/mac/githubblog/bibitiger_blog/octopress/source/_includes/asides/categories_tag.html",
+		"/Users/fanxu/workInZG/M+App_Domain/M+App_Android/M+_v1.5_2_2/MPlus/gradle.properties",
+		"/Users/fanxu/Desktop/hello/hello.js",
+		"/Users/fanxu/Desktop/hello.js",
+		"/Users/fanxu/Library/Application Support/Sublime Text 2/Packages/User/Package Control.sublime-settings",
+		"/Users/fanxu/Desktop/SAS设备使用.bat",
+		"/Volumes/Users/Administrator/Desktop/基础环境检查/SAS设备使用.bat",
+		"/Users/fanxu/Desktop/fdsafdas",
+		"/Users/fanxu/Library/Application Support/Sublime Text 2/Packages/ConvertToUTF8/ConvertToUTF8.sublime-settings",
+		"/Users/fanxu/Downloads/Mplus_adb_fastboot_reovery_package/Mplus_Fastboot_Recovery.bat",
+		"/Users/fanxu/Downloads/aaaa.txt",
+		"/Users/fanxu/Library/Application Support/Sublime Text 2/Packages/User/Batch File.sublime-settings",
+		"/Users/fanxu/workInZG/JNITEST/mytest/jni/Application.mk",
+		"/Users/fanxu/workInZG/JNITEST/mytest/jni/Android.mk"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"<open folders>",
+			"<open files>",
+			"<open folders>",
+			"/Users/fanxu/workInZG/log_bluetooth/com.zhaoguan.radarandroiddv1",
+			"/Volumes/DiskFan/mac/githubblog/bibitiger_blog/octopress,<open files>",
+			"/Volumes/DiskFan/mac/githubblog/bibitiger_blog/octopress"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"_receiversOffline",
+			"confirmCheckByDoc",
+			"console",
+			"Urich",
+			"get(CreateBy)",
+			";\n",
+			"new date",
+			"confirmche",
+			"confirmcheck",
+			"AV.Query",
+			"equelTo",
+			"findReportByReportAndDoc",
+			"111111111111",
+			"history success",
+			"AV.Push",
+			"3001",
+			"toString",
+			"})\n",
+			"channels",
+			"then",
+			"refu",
+			"refuse",
+			"rq",
+			"blent",
+			"blend",
+			"this",
+			"AV.Error",
+			"success",
+			"Request",
+			"RequestDoc",
+			"Requestdoc",
+			"requestdoc",
+			"doc",
+			"cloud",
+			"console.log",
+			"AV.Cloud",
+			"todos",
+			"bluetoothBase",
+			"jni_log_helper",
+			"blog.bibitiger.cn/blog/2016/05/18/batchforadb/",
+			"{\n",
+			"weibo",
+			"social",
+			"weibo_user",
+			"social",
+			"</p>",
+			"全部文章",
+			"baidu",
+			"js/plusone.js",
+			"google",
+			"social",
+			"weibo_user",
+			"addthis_button_sinaweibo",
+			"addthis_profile_id",
+			"weibo_share",
+			"fixed",
+			"bt send",
+			"exist",
+			"bootloader",
+			"setup_system",
+			"system.img",
+			"jump_self_setup_winrar",
+			"jump_unrar_drivers_folder",
+			"option",
+			"jump_unrar_drivers_folder",
+			"path_dl_drivers",
+			"android_",
+			"android",
+			"jump_self_setup_winrar",
+			"setLED",
+			"setLEDStateBlink"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 200.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"av",
+				"node_modules/avoscloud-sdk/dist/av.js"
+			],
+			[
+				"cl",
+				"cloud.js"
+			],
+			[
+				"error",
+				"node_modules/avoscloud-sdk/dist/node/error.js"
+			],
+			[
+				"ser",
+				"server.js"
+			],
+			[
+				"tod",
+				"routes/todos.js"
+			],
+			[
+				"app",
+				"app.js"
+			],
+			[
+				"he",
+				"hello.js"
+			],
+			[
+				"fd",
+				"fdsafdasfdasfdsafdsafdasfdasfdas"
+			],
+			[
+				"bluetoo",
+				"src/com/zhaoguan/radarandroiddv/bluetooth/bluetoothLE/BluetoothLEMonitor.java"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 255.0,
+	"status_bar_visible": true
+}

@@ -10,11 +10,16 @@ layout: default
 {% endfor %}
 </div>
 <nav id="pagenavi">
-    {% if paginator.previous_page %}
-        <a href="{{paginator.previous_page}}" class="prev">Prev</a>
+	{% if paginator.previous_page %}
+	    {% if paginator.previous_page == 1 %}
+	        <a href="/" class="prev">Prev</a>
+	    {% else %}
+	    	<!-- Hello {{paginator.previous_page}} -->
+	        <a href="{{paginator.previous_page}}" class="prev">Prev</a>
+	    {% endif %}
     {% endif %}
     {% if paginator.next_page %}
-        <a href="{{paginator.next_page}}" class="next">Next</a>
+        <a href="/posts/{{paginator.next_page}}" class="next">Next</a>
     {% endif %}
     <div class="center"><a href="{{ root_url }}/blog/archives">Blog Archives</a></div>
 </nav>
